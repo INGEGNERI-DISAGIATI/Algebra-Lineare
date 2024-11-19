@@ -12,15 +12,15 @@
 
 
 int main(void) {
-    int rigaA[] = {0, 0, 17, 0};
-    int rigaB[] = {1, 8, 32, 9};
+    // int rigaA[] = {0, 0, 17, 0};
+    // int rigaB[] = {1, 8, 32, 9};
 
     int righe = 3;
-    int colonne = 4;
-    int matrice[3][4] = {
-        {6, 3, 2, 1},
-        {0, 0, 2, 0},
-        {0, 5, 9, 8}
+    int colonne = 3;
+    int matrice[3][3] = {
+        {1, 2, 2},
+        {2, 4, 4},
+        {3, 2, 6}
     };
     int **matrice2 = copiaMatriceStaticaInDinamica((int *)matrice, righe, colonne);
 
@@ -39,8 +39,13 @@ int main(void) {
     // stampaTuple(zeri, righe);
 
     stampaMatrice(matrice2, righe, colonne);
-    ordinaRighe(matrice2, righe, colonne);
+    // ordinaRighe(matrice2, righe, colonne);
+    eliminazioneDiGauss(matrice2, righe, colonne);
     stampaMatrice(matrice2, righe, colonne);
+
+    ruotaMatrice(matrice2, 3);
+    stampaMatrice(matrice2, righe, colonne);
+    // printf("%d\n", aScala(matrice2, righe, colonne));
 
     return EXIT_SUCCESS;
 }
