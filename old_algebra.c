@@ -12,6 +12,7 @@ void cancellaMatrice(int **matrice, size_t numRighe);
 
 //operazioni
 int **MatriceTrasposta(int **matrice, size_t numRighe, size_t numColonne);
+void scambiaRighe(int **matrice, int rigaA, int rigaB);
 
 
 int *creaVettoreRiga(size_t dimensione)
@@ -86,4 +87,9 @@ int **MatriceTrasposta(int **matrice, size_t numRighe, size_t numColonne)
         }
     }
     return ret;
+}
+void scambiaRighe(int **matrice, int rigaA, int rigaB)
+{   int *scambio = matrice[rigaA];
+    matrice[rigaA] = matrice[rigaB];
+    matrice[rigaB] = scambio;
 }
