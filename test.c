@@ -1,4 +1,5 @@
 #include "algebra.c"
+// #include "old_algebra.c"
 #include <stdio.h>
 #include <string.h>
 //define
@@ -14,36 +15,32 @@ int main(void) {
     int rigaA[] = {0, 0, 17, 0};
     int rigaB[] = {1, 8, 32, 9};
 
-    int **matrice = malloc(2 * sizeof(int *));
-    matrice[0] = malloc(4 * sizeof(int));
-    matrice[1] = malloc(4 * sizeof(int));
-    memcpy(matrice[0], rigaA, 4 * sizeof(int));
-    memcpy(matrice[1], rigaB, 4 * sizeof(int));
-
+    int righe = 3;
+    int colonne = 4;
+    int matrice[3][4] = {
+        {6, 3, 2, 1},
+        {0, 0, 2, 0},
+        {0, 5, 9, 8}
+    };
+    int **matrice2 = copiaMatriceStaticaInDinamica((int *)matrice, righe, colonne);
 
     // combinazioneLineare(rigaA, rigaB, 4);
 
     // stampaArray(rigaB, 4);
     // puts("");
-    // stampaMatrice(matrice, 2, 4);
 
-    // printf("%d\n", contaZeriPerRigaConsecutivi(rigaA, 4));
-    Tupla *zeri = contaZeri(matrice, 2, 4);
-    // stampaArray(zeri, 2);
+    // // printf("%d\n", contaZeriPerRigaConsecutivi(rigaA, 4));
+    // Tupla *zeri = contaZeri(matrice2, righe, colonne);
+    
+    // stampaTuple(zeri, righe);
 
-    for(int i = 0; i < 2; i++) {
-        printf("Numero di Zeri: %d\n", zeri[i].numeroDiZeri);
-        printf("Indice di riga: %d\n", zeri[i].indiceDiRiga);
-        puts("");
-    }
+    // qsort(zeri, righe, sizeof(Tupla), compare);
 
-    qsort(zeri, 2, sizeof(Tupla), compare);
+    // stampaTuple(zeri, righe);
 
-    for(int i = 0; i < 2; i++) {
-        printf("Numero di Zeri: %d\n", zeri[i].numeroDiZeri);
-        printf("Indice di riga: %d\n", zeri[i].indiceDiRiga);
-        puts("");
-    }
+    stampaMatrice(matrice2, righe, colonne);
+    ordinaRighe(matrice2, righe, colonne);
+    stampaMatrice(matrice2, righe, colonne);
 
     return EXIT_SUCCESS;
 }

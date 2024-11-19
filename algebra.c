@@ -1,12 +1,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include "old_algebra.c"
 
 /*
     Funzione Ricorsiva che accetta 2 parametri interi 'a' e 'b' e ne restituisce il minimo comune multiplo.
     Controlla se il valore 'b' è uguale a 0 e ritorna: a
     altrimenti ritorna il minimo comune multiplo tra 'b' e 'a % b'
 */
+
+int compare(const void *a, const void *b);
 
 typedef struct {
     int numeroDiZeri;
@@ -66,11 +69,17 @@ Tupla *contaZeri(int **matrice, size_t righe, size_t colonne) {
     funzione conta pivot;
 */
 
-int compare(const void *a, const void *b) {
-    const Tupla *tupleA = (const Tupla *)a;
-    const Tupla *tupleB = (const Tupla *)b;
+void ordinaRighe(int **matrice, size_t righe, size_t colonne) {
+    Tupla *zeri = contaZeri(matrice, righe, colonne);
+    qsort(zeri, righe, sizeof(Tupla), compare);
+    int **copia = copiaMatriceDinamica(matrice, righe, colonne);
+    
+    for(int i = 0; i < righe; i++) {
+        // matrice[i] = copia[zeri[i].indiceDiRiga];
+    
+    }
 
-    return (tupleA->numeroDiZeri - tupleB->numeroDiZeri);
+    cancellaMatrice(copia, righe);
 }
   
 /*
@@ -90,17 +99,35 @@ int compare(const void *a, const void *b) {
 //--------------------------------------------------------------------------------
 
 
-void stampaArray(const int *array, size_t size) {
+void stampaArray(int *array, size_t size) {
     for(size_t i = 0; i < size; i++) {
         printf("%4d ", array[i]);
     }   
     puts("");
 }
 
-void stampaMatrice(const int **matrice, size_t righe, size_t colonne) {
+void stampaMatrice(int **matrice, size_t righe, size_t colonne) {
     for(size_t i = 0; i < righe; i++) {
         stampaArray(matrice[i], colonne);
     }
     puts("");
     
+}
+
+void stampaTuple(Tupla *tuple, size_t righe) {
+    for(int i = 0; i < righe; i++) {
+        printf("Numero di Zeri: %d\n", tuple[i].numeroDiZeri);
+        printf("Indice di riga: %d\n", tuple[i].indiceDiRiga);
+        puts("");
+    }
+}
+
+/*
+    Compare di tuple per ordinare le tuple.
+*/
+int compare(const void *a, const void *b) {
+    const Tupla *tupleA = (const Tupla *)a;
+    const Tupla *tupleB = (const Tupla *)b;
+
+    return (tupleA->numeroDiZeri - tupleB->numeroDiZeri);
 }
