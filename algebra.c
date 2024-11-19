@@ -1,3 +1,4 @@
+#include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -9,6 +10,11 @@ typedef struct {
     int indiceDiRiga;
 } Tupla;
 
+typedef struct {
+    int numeratore;
+    int denominatore;
+} Frazione;
+
 int mcm(int a, int b);
 void combinazioneLineare(int *rigaA, int *rigaB, size_t colonne);
 int contaZeriPerRigaConsecutivi(const int *riga, size_t colonne);
@@ -18,16 +24,20 @@ bool aScala(int **matrice, size_t righe, size_t colonne);
 int individuaPivot(int *riga, size_t colonne);
 void svuotaColonna(int **matrice, size_t righe, size_t colonne, size_t riga);
 void eliminazioneDiGauss(int **matrice, size_t righe, size_t colonne);
+void eliminazioneDiGaussJordan(int **matrice, size_t righe, size_t colonne);
 
-void ruotaMatrice(int **matrice, size_t ordine);
+
+void ruotaMatrice(int **matrice, size_t righe, size_t colonne);
+void invertiTerminiNoti(int *vettore, size_t ordine);
+void shiftSinistraMatrice(int **matrice, size_t righe, size_t colonne);
 
 void stampaArray(int *array, size_t size);
 void stampaMatrice(int **matrice, size_t righe, size_t colonne);
 void stampaTuple(Tupla *tuple, size_t righe);
 int compare(const void *a, const void *b);
 
-
-
+//FRAZIONI
+void riduciAiMinimiTermini(Frazione *frazione);
 
 
 
@@ -169,28 +179,29 @@ void eliminazioneDiGaussJordan(int **matrice, size_t righe, size_t colonne) {
         return;
     }
 
-    //int *terminiNoti = separaTerminiNoti(matrice, righe, colonne - 1);
+    ruotaMatrice(matrice, righe, colonne);
+    shiftSinistraMatrice(matrice, righe, colonne);
     
-    ruotaMatrice(matrice, ordine);
-    shiftSinistraMatrice(matrice, righe, righe)
-    //invertiTerminiNoti(terminiNoti, ordine);
-    //int **matriceCompleta = affiancaVettoreAMatrice(matrice, vettore, ordine);
-    eliminazioneDiGauss(matrice, ordine, ordine + 1);
+    eliminazioneDiGauss(matrice, righe, colonne);
+    
+    ruotaMatrice(matrice, righe, colonne);
+    shiftSinistraMatrice(matrice, righe, colonne);
 }
 
 /*
 
 */
-void ruotaMatrice(int **matrice, size_t ordine) {
-    
-    for(int i = 0; i < ordine / 2; i++) {
-        for(int j = 0; j < ordine / 2; j++) {
-            int tmp2 = matrice[i][ordine - j - 1];
-            matrice[i][ordine - j - 1] = matrice[i][j];
+void ruotaMatrice(int **matrice, size_t righe, size_t colonne) {
+    for(int i = 0; i < righe; i++) {
+        for(int j = 0; j < colonne / 2; j++) {
+            int tmp2 = matrice[i][colonne - j - 1];
+            matrice[i][colonne - j - 1] = matrice[i][j];
             matrice[i][j] = tmp2;
         }
-        int *tmp = matrice[ordine - i - 1];
-        matrice[ordine - i - 1] = matrice[i];
+    }
+    for(int i = 0; i < righe / 2; i++) {
+        int *tmp = matrice[righe - i - 1];
+        matrice[righe - i - 1] = matrice[i];
         matrice[i] = tmp;
     }
 }
@@ -272,3 +283,10 @@ int compare(const void *a, const void *b) {
     2 5 8
     3 6 9 
 */
+
+
+void riduciAiMinimiTermini(Frazione *frazione) {
+    int mcd = MCD(frazione->numeratore,frazione->denominatore);
+    frazione->numeratore /= mcd;
+    frazione->denominatore /= mcd;
+}

@@ -1,10 +1,12 @@
+#include <stdio.h>
+#include <stdlib.h>
 
 //prototypes
-int **copiaMatriceStaticaInDinamica(int *pointerTo00, size_t numRighe, size_t numColonne);
-int **copiaMatriceDinamica(int **matrice, size_t numRighe, size_t numColonne);
 int *creaVettoreRiga(size_t dimensione);
 int **creaMatrice(size_t numRighe, size_t numColonne);
 int *copiaVettoreRiga(int riga[], size_t numColonne);
+int **copiaMatriceStaticaInDinamica(int *pointerTo00, size_t numRighe, size_t numColonne);
+int **copiaMatriceDinamica(int **matrice, size_t numRighe, size_t numColonne);
 
 //eliminazione di non gauss.
 void cancellaVettoreRiga(int *riga);
