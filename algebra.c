@@ -73,6 +73,18 @@ int compare(const void *a, const void *b) {
     return (tupleA->numeroDiZeri - tupleB->numeroDiZeri);
 }
   
+/*
+    per eliminazione di gauss verso l'alto, fare la matrice trasposta della matrice ridotta a scala e 
+    applicare la riduzione verso il basso.
+
+    per la matrice trasposta, le righe diventano le colonne di quella ritornata.
+    1 2 3
+    4 5 6
+    7 8 9
+
+    1 4 7
+    2 5 8
+    3 6 9 */
 
 
 //--------------------------------------------------------------------------------
