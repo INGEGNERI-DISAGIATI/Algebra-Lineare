@@ -1,4 +1,5 @@
 #include "algebra.h"
+
 /**
  * @brief Calcola il Massimo Comun Divisore di 2 numeri
  *
@@ -11,7 +12,7 @@
  * @return Int
  */
 int MCD(int a, int b) {
-    if(b == 0) {
+    if (b == 0) {
         return a;
     }
     return (MCD(b, a % b));
@@ -51,7 +52,7 @@ int mcm(int a, int b) {
 void combinazioneLineare(int *rigaA, int *rigaB, size_t colonne) {
     int jPivot = individuaPivot(rigaA, colonne);
     
-    if(rigaB[jPivot] == 0) {
+    if (rigaB[jPivot] == 0) {
         return;
     }
 
@@ -60,7 +61,7 @@ void combinazioneLineare(int *rigaA, int *rigaB, size_t colonne) {
     int coefficienteA = (moltiplicatore / rigaA[jPivot]);
     int coefficienteB = (moltiplicatore / rigaB[jPivot]);
 
-    for(size_t i = 0; i < colonne; i++) {
+    for (size_t i = 0; i < colonne; i++) {
         rigaB[i] = (coefficienteB * rigaB[i]) - (coefficienteA * rigaA[i]);
     }
 }
@@ -79,8 +80,8 @@ void combinazioneLineare(int *rigaA, int *rigaB, size_t colonne) {
  */
 int contaZeriPerRigaConsecutivi(const int *riga, size_t colonne) {
     int counter = 0;
-    for(int i = 0; i < colonne; i++) {
-        if(riga[i] != 0 ) {
+    for (int i = 0; i < colonne; i++) {
+        if (riga[i] != 0 ) {
             return counter;
         }
         counter++;
@@ -102,7 +103,7 @@ int contaZeriPerRigaConsecutivi(const int *riga, size_t colonne) {
  */
 Tupla *contaZeri(int **matrice, size_t righe, size_t colonne) {
     Tupla *zeri = calloc(righe, sizeof(Tupla));
-    for(int i = 0; i < righe; i++) {
+    for (int i = 0; i < righe; i++) {
         zeri[i].numeroDiZeri = contaZeriPerRigaConsecutivi(matrice[i], colonne);
         zeri[i].indiceDiRiga = i;
     }
@@ -131,7 +132,7 @@ void ordinaRighe(int **matrice, size_t righe, size_t colonne) {
     
     int **copia = copiaMatriceDinamica(matrice, righe, colonne);
     
-    for(int i = 0; i < righe; i++) {
+    for (int i = 0; i < righe; i++) {
         free(matrice[i]);
         matrice[i] = copia[zeri[i].indiceDiRiga];
     }
@@ -153,8 +154,8 @@ void ordinaRighe(int **matrice, size_t righe, size_t colonne) {
  * @return Bool
  */
 bool aScala(int **matrice, size_t righe, size_t colonne) {  
-    for(int i = 0; i < righe - 1; i++) {
-        if(individuaPivot(matrice[i], colonne) >= individuaPivot(matrice[i + 1], colonne)) {
+    for (int i = 0; i < righe - 1; i++) {
+        if (individuaPivot(matrice[i], colonne) >= individuaPivot(matrice[i + 1], colonne)) {
             return false;
         }
     }
@@ -187,7 +188,7 @@ int individuaPivot(int *riga, size_t colonne) {
  * @return Void
  */
 void svuotaColonna(int **matrice, size_t righe, size_t colonne, size_t riga) {
-    for(int i = riga + 1; i < righe; i++) {
+    for (int i = riga + 1; i < righe; i++) {
         combinazioneLineare(matrice[riga], matrice[i], colonne);
     }
 }
@@ -206,7 +207,7 @@ void svuotaColonna(int **matrice, size_t righe, size_t colonne, size_t riga) {
 void eliminazioneDiGauss(int **matrice, size_t righe, size_t colonne) {
     int index = 0;
 
-    while(!aScala(matrice, righe, colonne) && index < righe) {
+    while (!aScala(matrice, righe, colonne) && index < righe) {
         ordinaRighe(matrice, righe, colonne);
         svuotaColonna(matrice, righe, colonne, index);
 
@@ -230,7 +231,7 @@ void eliminazioneDiGauss(int **matrice, size_t righe, size_t colonne) {
  * @return Void
  */
 void eliminazioneDiGaussJordan(int **matrice, size_t righe, size_t colonne) {
-    if(righe != colonne - 1) {
+    if (righe != colonne - 1) {
         return;
     }
 
@@ -256,14 +257,14 @@ void eliminazioneDiGaussJordan(int **matrice, size_t righe, size_t colonne) {
  * @return Void
  */
 void ruotaMatrice(int **matrice, size_t righe, size_t colonne) {
-    for(int i = 0; i < righe; i++) {
-        for(int j = 0; j < colonne / 2; j++) {
+    for (int i = 0; i < righe; i++) {
+        for (int j = 0; j < colonne / 2; j++) {
             int tmp2 = matrice[i][colonne - j - 1];
             matrice[i][colonne - j - 1] = matrice[i][j];
             matrice[i][j] = tmp2;
         }
     }
-    for(int i = 0; i < righe / 2; i++) {
+    for (int i = 0; i < righe / 2; i++) {
         int *tmp = matrice[righe - i - 1];
         matrice[righe - i - 1] = matrice[i];
         matrice[i] = tmp;
@@ -280,7 +281,7 @@ void ruotaMatrice(int **matrice, size_t righe, size_t colonne) {
  * @return Void
  */
 void invertiTerminiNoti(int *vettore, size_t ordine) {
-    for(int i = 0; i < ordine / 2; i++) {
+    for (int i = 0; i < ordine / 2; i++) {
         int tmp = vettore[ordine - i - 1];
         vettore[ordine - i - 1] = vettore[i];
         vettore[i] = tmp;
@@ -298,8 +299,8 @@ void invertiTerminiNoti(int *vettore, size_t ordine) {
  * @return Void
  */
 void shiftSinistraMatrice(int **matrice, size_t righe, size_t colonne) {
-    for(int i = 0; i < righe; i++) {
-        for(int j = 0; j < colonne - 1; j++) {
+    for (int i = 0; i < righe; i++) {
+        for (int j = 0; j < colonne - 1; j++) {
             int tmp = matrice[i][j];
             matrice[i][j] = matrice[i][j + 1];
             matrice[i][j + 1] = tmp;
@@ -318,7 +319,7 @@ void shiftSinistraMatrice(int **matrice, size_t righe, size_t colonne) {
  * @return Void
  */
 void stampaArray(int *array, size_t size) {
-    for(size_t i = 0; i < size; i++) {
+    for (size_t i = 0; i < size; i++) {
         printf("%4d ", array[i]);
     }   
     puts("");
@@ -333,7 +334,7 @@ void stampaArray(int *array, size_t size) {
  * @return Void
  */
 void stampaMatrice(int **matrice, size_t righe, size_t colonne) {
-    for(size_t i = 0; i < righe; i++) {
+    for (size_t i = 0; i < righe; i++) {
         stampaArray(matrice[i], colonne);
     }
     puts("");
@@ -348,7 +349,7 @@ void stampaMatrice(int **matrice, size_t righe, size_t colonne) {
  * @return Void
  */
 void stampaTuple(Tupla *tuple, size_t righe) {
-    for(int i = 0; i < righe; i++) {
+    for (int i = 0; i < righe; i++) {
         printf("Numero di Zeri: %d\n", tuple[i].numeroDiZeri);
         printf("Indice di riga: %d\n", tuple[i].indiceDiRiga);
         puts("");
