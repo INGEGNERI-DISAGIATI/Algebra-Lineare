@@ -39,7 +39,7 @@ void svuotaColonna(int **matrice, size_t righe, size_t colonne, size_t riga);
 void eliminazioneDiGauss(int **matrice, size_t righe, size_t colonne);
 void eliminazioneDiGaussJordan(int **matrice, size_t righe, size_t colonne);
 
-
+int **copiaMatriceDinamica(int **matrice, size_t numRighe, size_t numColonne);
 void ruotaMatrice(int **matrice, size_t righe, size_t colonne);
 void invertiTerminiNoti(int *vettore, size_t ordine);
 void shiftSinistraMatrice(int **matrice, size_t righe, size_t colonne);
@@ -52,5 +52,18 @@ int compare(const void *a, const void *b);
 //FRAZIONI
 void riduciAiMinimiTermini(Frazione *frazione);
 
+
+//DONAZIONE DI MR.MAIO NON DOCUMENTATA
+int *creaVettoreRiga(size_t dimensione);
+int **creaMatrice(size_t numRighe, size_t numColonne);
+int *copiaVettoreRiga(int riga[], size_t numColonne);
+int **copiaMatriceStaticaInDinamica(int *pointerTo00, size_t numRighe, size_t numColonne);
+int **copiaMatriceDinamica(int **matrice, size_t numRighe, size_t numColonne);
+
+void cancellaVettoreRiga(int *riga);
+void cancellaMatrice(int **matrice, size_t numRighe);
+
+int **MatriceTrasposta(int **matrice, size_t numRighe, size_t numColonne);
+void scambiaRighe(int **matrice, int rigaA, int rigaB);
 
 #endif
