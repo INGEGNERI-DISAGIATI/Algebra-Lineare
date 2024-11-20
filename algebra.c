@@ -219,8 +219,8 @@ void eliminazioneDiGauss(int **matrice, size_t righe, size_t colonne) {
  * @brief Esegue l'eliminazione di Gauss-Jordan (Gauss verso l'alto) su una matrice (n * m) 
  *        con la m-esima colonna i termini noti
  *
- * Verifica se il numero di righe e colonne (escluso il vettore dei termini noti) sono uguali, se non lo sono esce dalla
- * funzione, in caso contrario continua.
+ * Verifica se il numero di righe e colonne (escluso il vettore dei termini noti) sono uguali, 
+ * oppure se non è a scala esce dalla funzione, in caso contrario continua.
  * Ruota la matrice di 180° ed effettua uno shift delle colonne a Sinistra per normalizzare la posizione del vettore dei
  * termini noti, successivamente esegue l'eliminazione di Gauss verso il basso sulla matrice risultante e dopo averla fatta
  * riporta la matrice allo stato originario ruotandola di 180° e shiftandola di nuovo a sinistra.
@@ -231,7 +231,7 @@ void eliminazioneDiGauss(int **matrice, size_t righe, size_t colonne) {
  * @return Void
  */
 void eliminazioneDiGaussJordan(int **matrice, size_t righe, size_t colonne) {
-    if (righe != colonne - 1) {
+    if (!aScala(matrice, righe, colonne)) {
         return;
     }
 
@@ -242,6 +242,117 @@ void eliminazioneDiGaussJordan(int **matrice, size_t righe, size_t colonne) {
     
     ruotaMatrice(matrice, righe, colonne);
     shiftSinistraMatrice(matrice, righe, colonne);
+    ordinaRighe(matrice, righe, colonne);
+}
+
+/**
+ * @brief Restituisce:
+ *  1). -1 se il sistema è impossibile
+ *  2) 0 se c'è una sola soluzione
+ *  3) x se ha inf^x soluzioni.
+ *  4) -2 se la matrice in input non è a scala.
+ *
+ * Sfrutta una funzione ContaPivot che conta i pivot della matrice inserita, calcola il rango di A
+ * accettando come parametri matrice, righe, colonne - 1 (esclude l'ultima colonna) perché si presuppone
+ * che la matrice sia già a scala, poi calcola il rango di A|b (vettore dei termini noti)
+ * 
+ * @param matrice matrice di interi
+ * @param righe numero di righe della matrice
+ * @param colonne numero di colonne della matrice
+ * @return Int
+ */
+int roucheCapelli(int **matrice, size_t righe, size_t colonne) {
+    if (!aScala(matrice, righe, colonne)) {
+        return -2;
+    }
+    //verifica matrice senza termini noti
+    int rangoA = contaPivot(matrice, righe, colonne - 1);
+    int rangoAb = contaPivot(matrice, righe, colonne);
+
+    if (rangoA != rangoAb) {
+        return -1;
+    }
+    else {
+        return (colonne - 1 - rangoA);
+    }
+}
+
+/**
+ * @brief Restituisce il numero di pivot della matrice, in caso non sia a scala ritorna -1
+ *
+ * Scorre tutta la matrice e fin quando trova un elemento non nullo, incrementa il numero di pivot
+ * e passa alla prossima riga.
+ * 
+ * @param matrice matrice di interi
+ * @param righe numero di righe della matrice
+ * @param colonne numero di colonne della matrice
+ * @return Int
+ */
+int contaPivot(int **matrice, size_t righe, size_t colonne) {
+    if(!aScala(matrice, righe, colonne)) {
+        return -1;
+    }
+    int counter = 0;
+    for (int i = 0; i < righe; i++) {
+        for (int j = 0; j < colonne; j++) {
+            if (matrice[i][j] != 0) {
+                counter++;
+                break;
+            }
+        }
+    }
+
+    return counter;
+}
+
+/**
+ * @brief Risolve la Matrice
+ *
+ * Risolve a scala il sistema utilizzando la risoluzione verso il basso e verso l'alto
+ * 
+ *
+ * @param matrice matrice di interi
+ * @param righe numero di righe della matrice
+ * @param colonne numero di colonne della matrice
+ * @return Void
+ */
+void risolviSistema(int **matrice, size_t righe, size_t colonne) {
+    int **copia = copiaMatriceDinamica(matrice, righe, colonne);
+
+    eliminazioneDiGauss(copia, righe, colonne);
+    int rc = roucheCapelli(copia, righe, colonne);
+
+    if (rc == -1) {
+        puts("Sistema Incompatibile");
+        return;
+    }
+    if (rc > 0) {
+        printf("Il sistema ammette ∞^%d soluzioni\n", rc);
+        return;
+    }
+
+    int pivot = contaPivot(copia, righe, colonne);
+
+    eliminazioneDiGaussJordan(copia, righe, colonne);
+
+    Frazione *soluzioni = malloc(pivot * sizeof(Frazione));
+    
+    for (int i = 0; i < pivot; i++) {
+        
+        soluzioni[i].denominatore = copia[i][i];
+        soluzioni[i].numeratore = copia[i][colonne - 1];
+        
+        riduciAiMinimiTermini(&soluzioni[i]);
+
+        printf("x%d = %d", (i + 1), soluzioni[i].numeratore);
+        if (soluzioni[i].denominatore != 1) {
+            printf("/%d", soluzioni[i].denominatore);
+        }
+
+        puts("");
+    }
+
+    free(copia);
 }
 
 /**
@@ -376,11 +487,23 @@ int compare(const void *a, const void *b) {
     return (tupleA->numeroDiZeri - tupleB->numeroDiZeri);
 }
 
-
+/**
+ * @brief Riduce ai minimi termini una Frazione
+ *
+ * Calcola il massimo comun divisore di tutti e due i numeri della frazione e li divide per esso.
+ *
+ * @param frazione puntatore a Frazione
+ * @return Void
+ */
 void riduciAiMinimiTermini(Frazione *frazione) {
     int mcd = MCD(frazione->numeratore,frazione->denominatore);
     frazione->numeratore /= mcd;
     frazione->denominatore /= mcd;
+
+    if (frazione->denominatore < 0) {
+        frazione->numeratore *= -1;
+        frazione->denominatore *= -1;
+    }
 }
 
 

@@ -7,7 +7,6 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <math.h>
-#include "old_algebra.c"
 
 /*
     Tipo: Tupla
@@ -38,6 +37,9 @@ int individuaPivot(int *riga, size_t colonne);
 void svuotaColonna(int **matrice, size_t righe, size_t colonne, size_t riga);
 void eliminazioneDiGauss(int **matrice, size_t righe, size_t colonne);
 void eliminazioneDiGaussJordan(int **matrice, size_t righe, size_t colonne);
+int roucheCapelli(int **matrice, size_t righe, size_t colonne);
+int contaPivot(int **matrice, size_t righe, size_t colonne);
+void risolviSistema(int **matrice, size_t righe, size_t colonne);
 
 int **copiaMatriceDinamica(int **matrice, size_t numRighe, size_t numColonne);
 void ruotaMatrice(int **matrice, size_t righe, size_t colonne);
