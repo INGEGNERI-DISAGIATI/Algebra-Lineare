@@ -99,7 +99,7 @@ int contaZeriPerRigaConsecutivi(const int *riga, size_t colonne) {
  * @param matrice matrice di interi
  * @param righe numero di righe della matrice
  * @param colonne numero di colonne della matrice
- * @return Tupla
+ * @return Tupla*
  */
 Tupla *contaZeri(int **matrice, size_t righe, size_t colonne) {
     Tupla *zeri = calloc(righe, sizeof(Tupla));
