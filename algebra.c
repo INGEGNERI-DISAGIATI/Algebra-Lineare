@@ -124,14 +124,18 @@ Tupla *contaZeri(int **matrice, size_t righe, size_t colonne) {
  * @param matrice matrice di interi
  * @param righe numero di righe della matrice
  * @param colonne numero di colonne della matrice
- * @return Void
+ * @return Int
  */
-void ordinaRighe(int **matrice, size_t righe, size_t colonne) {
+int ordinaRighe(int **matrice, size_t righe, size_t colonne) {
     Tupla *zeri = contaZeri(matrice, righe, colonne);
+    Tupla *originale = malloc(righe * sizeof(Tupla));
+    memcpy(originale, zeri, righe * sizeof(Tupla));
+
     qsort(zeri, righe, sizeof(Tupla), compare);
-    
+
+    int scambi = contaScambi(originale, zeri, righe);
+
     int **copia = copiaMatriceDinamica(matrice, righe, colonne);
-    
     for (int i = 0; i < righe; i++) {
         free(matrice[i]);
         matrice[i] = copia[zeri[i].indiceDiRiga];
@@ -139,7 +143,24 @@ void ordinaRighe(int **matrice, size_t righe, size_t colonne) {
 
     free(copia);
     free(zeri);
+
+    return scambi;
 }
+
+
+int contaScambi(Tupla *originale, Tupla *copia, size_t righe) {
+    int scambi = 0;
+    
+    for (int i = 0; i < righe; i++) {
+        if(originale[i].indiceDiRiga != copia[i].indiceDiRiga) {
+            scambi ++;
+        }
+    }
+
+    return (scambi / 2);
+}
+
+
 
 /**
  * @brief Verifica se la matrice è a scala o no
@@ -204,15 +225,17 @@ void svuotaColonna(int **matrice, size_t righe, size_t colonne, size_t riga) {
  * @param colonne numero di colonne della matrice
  * @return Void
  */
-void eliminazioneDiGauss(int **matrice, size_t righe, size_t colonne) {
+int eliminazioneDiGauss(int **matrice, size_t righe, size_t colonne) {
     int index = 0;
-
+    int scambi = 0;
     while (!aScala(matrice, righe, colonne) && index < righe) {
-        ordinaRighe(matrice, righe, colonne);
+        scambi += ordinaRighe(matrice, righe, colonne);
         svuotaColonna(matrice, righe, colonne, index);
 
         index ++;
     }
+
+    return scambi;
 }
 
 /**
@@ -333,7 +356,7 @@ void risolviSistema(int **matrice, size_t righe, size_t colonne) {
 
     int pivot = contaPivot(copia, righe, colonne);
 
-    eliminazioneDiGaussJordan(copia, righe, colonne);
+    
 
     Frazione *soluzioni = malloc(pivot * sizeof(Frazione));
     
@@ -353,6 +376,29 @@ void risolviSistema(int **matrice, size_t righe, size_t colonne) {
     }
 
     free(copia);
+}
+
+/**
+ * @brief Ruota di 180° una matrice
+ *
+ * Nella prima iterazione della matrice inverte rispetto all'asse verticale le colonne della matrice 
+ * e successivamente inverte secondo l'asse orizzontale le righe della matrice, modificando la matrice
+ * originale in una matrice ruotata di 180°
+ *
+ * @param matrice matrice di interi
+ * @param righe numero di righe della matrice
+ * @param colonne numero di colonne della matrice
+ * @return Void
+ */
+int determinante(int **matrice, size_t ordine) {
+    int determinante = 1;
+
+    int moltiplicatoreDeterminante = eliminazioneDiGauss(matrice, ordine, ordine);
+    for(int i = 0; i < ordine; i++) {
+        determinante *= matrice[i][i];
+    }
+
+    return (moltiplicatoreDeterminante % 2 == 0) ? determinante : -determinante;
 }
 
 /**

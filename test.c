@@ -51,7 +51,9 @@ int main(void) {
 
     // eliminazioneDiGauss(matrice, righe, colonne);
     // eliminazioneDiGaussJordan(matrice, righe, colonne);
-    risolviSistema(matrice, righe, colonne);
+    // risolviSistema(matrice, righe, colonne);
+
+    printf("determinante del piccione di tua mamma: %d", determinante(matrice, righe));
 
     //printf("Matrice dopo l'eliminazione di Gauss:\n");
     // stampaMatrice(matrice, righe, colonne);
