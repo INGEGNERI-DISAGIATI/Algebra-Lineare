@@ -176,10 +176,10 @@ void eliminazioneDiGauss(int **matrice, size_t righe, size_t colonne) {
     
 */
 
-// void eliminazioneDiGaussJordan(int **matrice, size_t righe, size_t colonne) {
-//     if(righe != colonne - 1) {
-//         return;
-//     }
+void eliminazioneDiGaussJordan(int **matrice, size_t righe, size_t colonne) {
+    if(righe != colonne - 1) {
+        return;
+    }
 
     ruotaMatrice(matrice, righe, colonne);
     shiftSinistraMatrice(matrice, righe, colonne);
