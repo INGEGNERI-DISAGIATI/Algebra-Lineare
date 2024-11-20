@@ -71,7 +71,7 @@ void combinazioneLineare(int *rigaA, int *rigaB, size_t colonne) {
  *
  * inizializza una variabile counter che si occupa di mantenere il conto di quanti zeri consecutivi
  * sono presenti all'interno della riga, successivamente itera su tutta la riga e fin quando non trova
- * un valore non nullo, incrementa la variabile, in caso contrario ritorna il valore di counter
+ * un valore non nullo, incrementa la variabile, in caso contrario ritorna il valore di counter.
  * 
  * FONDAMENTALE.
  * @param rigaA array di interi
