@@ -28,7 +28,6 @@ int main(void) {
 
     // stampaArray(rigaB, 4);
     // puts("");
-
     // // printf("%d\n", contaZeriPerRigaConsecutivi(rigaA, 4));
     // Tupla *zeri = contaZeri(matrice2, righe, colonne);
     
