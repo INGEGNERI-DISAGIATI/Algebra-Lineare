@@ -18,9 +18,9 @@ int main(void) {
     int righe = 3;
     int colonne = 3;
     int matrice[3][3] = {
-        {1, 2, 2},
-        {2, 4, 4},
-        {3, 2, 6}
+        {1, 2, 2}, 
+        {3, 0, 4}, 
+        {9, 1, 6}  
     };
     int **matrice2 = copiaMatriceStaticaInDinamica((int *)matrice, righe, colonne);
 

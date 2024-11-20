@@ -9,6 +9,7 @@ typedef struct {
     int indiceDiRiga;
 } Tupla;
 
+
 int mcm(int a, int b);
 void combinazioneLineare(int *rigaA, int *rigaB, size_t colonne);
 int contaZeriPerRigaConsecutivi(const int *riga, size_t colonne);
@@ -64,6 +65,7 @@ void combinazioneLineare(int *rigaA, int *rigaB, size_t colonne) {
     }
 
     int moltiplicatore = mcm(rigaA[jPivot], rigaB[jPivot]);
+
     int coefficienteA = (moltiplicatore / rigaA[jPivot]);
     int coefficienteB = (moltiplicatore / rigaB[jPivot]);
 
@@ -105,6 +107,7 @@ Tupla *contaZeri(int **matrice, size_t righe, size_t colonne) {
 void ordinaRighe(int **matrice, size_t righe, size_t colonne) {
     Tupla *zeri = contaZeri(matrice, righe, colonne);
     qsort(zeri, righe, sizeof(Tupla), compare);
+    
     int **copia = copiaMatriceDinamica(matrice, righe, colonne);
     
     for(int i = 0; i < righe; i++) {
@@ -164,19 +167,19 @@ void eliminazioneDiGauss(int **matrice, size_t righe, size_t colonne) {
     
 */
 
-void eliminazioneDiGaussJordan(int **matrice, size_t righe, size_t colonne) {
-    if(righe != colonne - 1) {
-        return;
-    }
+// void eliminazioneDiGaussJordan(int **matrice, size_t righe, size_t colonne) {
+//     if(righe != colonne - 1) {
+//         return;
+//     }
 
-    //int *terminiNoti = separaTerminiNoti(matrice, righe, colonne - 1);
+//     //int *terminiNoti = separaTerminiNoti(matrice, righe, colonne - 1);
     
-    ruotaMatrice(matrice, ordine);
-    shiftSinistraMatrice(matrice, righe, righe)
-    //invertiTerminiNoti(terminiNoti, ordine);
-    //int **matriceCompleta = affiancaVettoreAMatrice(matrice, vettore, ordine);
-    eliminazioneDiGauss(matrice, ordine, ordine + 1);
-}
+//     ruotaMatrice(matrice, ordine);
+//     shiftSinistraMatrice(matrice, righe, righe)
+//     //invertiTerminiNoti(terminiNoti, ordine);
+//     //int **matriceCompleta = affiancaVettoreAMatrice(matrice, vettore, ordine);
+//     eliminazioneDiGauss(matrice, ordine, ordine + 1);
+// }
 
 /*
 
