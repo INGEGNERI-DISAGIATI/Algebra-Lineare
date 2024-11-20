@@ -1,3 +1,6 @@
+#ifndef _OLD_ALGEBRA_H_
+#define _OLD_ALGEBRA_H_
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -95,3 +98,5 @@ void scambiaRighe(int **matrice, int rigaA, int rigaB)
     matrice[rigaA] = matrice[rigaB];
     matrice[rigaB] = scambio;
 }
+
+#endif
