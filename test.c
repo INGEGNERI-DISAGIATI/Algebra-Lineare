@@ -17,7 +17,7 @@ int main(void) {
 
     int righe = 3;
     int colonne = 4;
-    int mat[3][4] = {
+    int mat[3][4] = { // che hit sta matrice!
         {1, 3, 1,  0},
         {3, 9, 4,  1},
         {2, 1, 5,  0}
