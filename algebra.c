@@ -1,10 +1,13 @@
+#ifndef _ALGEBRA_H_
+#define _ALGEBRA_H_
+
+
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
 #include <math.h>
 #include "old_algebra.c"
-
 
 /*
     Tipo: Tupla
@@ -435,4 +438,4 @@ void riduciAiMinimiTermini(Frazione *frazione) {
 
 
 
-
+#endif
