@@ -442,13 +442,7 @@ int determinante(int **matriceOriginale, size_t ordine) {
     determinante.numeratore = 1;
     determinante.denominatore = 1;
     int *arrayCoefficienti = malloc(ordine * sizeof(int));
-    if(arrayCoefficienti == NULL) {
-        puts("SEI FROCIO");
-        exit(1);
-    }
-    for(int i = 0; i < ordine; i++) {
-        arrayCoefficienti[i] = 1;
-    }
+    
     int moltiplicatoreDeterminante = eliminazioneDiGaussInt(arrayCoefficienti, matrice, ordine, ordine);
     for(int i = 0; i < ordine; i++) {
         determinante.numeratore *= matrice[i][i];
