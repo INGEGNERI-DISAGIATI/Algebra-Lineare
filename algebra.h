@@ -29,7 +29,7 @@ typedef struct {
 
 int MCD(int a, int b);
 int mcm(int a, int b);
-void combinazioneLineare(int *rigaA, int *rigaB, size_t colonne);
+int combinazioneLineare(int *rigaA, int *rigaB, size_t colonne);
 int contaZeriPerRigaConsecutivi(const int *riga, size_t colonne);
 Tupla *contaZeri(int **matrice, size_t righe, size_t colonne);
 int ordinaRighe(int **matrice, size_t righe, size_t colonne);
@@ -42,12 +42,11 @@ int roucheCapelli(int **matrice, size_t righe, size_t colonne);
 int contaPivot(int **matrice, size_t righe, size_t colonne);
 void risolviSistema(int **matrice, size_t righe, size_t colonne);
 
-int contaScambi(Tupla *originale, Tupla *copia, size_t righe);
 int determinante(int **matrice, size_t ordine);
 
 int **copiaMatriceDinamica(int **matrice, size_t numRighe, size_t numColonne);
 void ruotaMatrice(int **matrice, size_t righe, size_t colonne);
-void invertiTerminiNoti(int *vettore, size_t ordine);
+void invertiArray(int *vettore, size_t ordine);
 void shiftSinistraMatrice(int **matrice, size_t righe, size_t colonne);
 
 void stampaArray(int *array, size_t size);
