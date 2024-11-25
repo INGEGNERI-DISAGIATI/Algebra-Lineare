@@ -138,7 +138,7 @@ int ordinaRighe(int **matrice, size_t righe, size_t colonne) {
 
     int scambi = 0;
     for(int i = 0; i < righe; i++) {
-        scambi += zeri[i].indiceDiRiga - i;
+        scambi += abs(zeri[i].indiceDiRiga - i);
     }
     scambi /= 2;
 
@@ -207,11 +207,11 @@ int individuaPivot(int *riga, size_t colonne) {
  * @param righe riga dalla quale partire per svuotare la colonna
  * @return Void
  */
-void svuotaColonnaInt(int *arrayCoefficienti, int **matrice, size_t righe, size_t colonne, size_t riga) {
+void svuotaColonnaInt(int *coefficienti, int **matrice, size_t righe, size_t colonne, size_t riga) {
     for (int i = riga + 1; i < righe; i++) {
         int coefficiente = combinazioneLineare(matrice[riga], matrice[i], colonne);
-        if(arrayCoefficienti != NULL) {
-            arrayCoefficienti[i] *= coefficiente;
+        if(coefficienti != NULL) {
+            *coefficienti *= coefficiente;
         }
     }
 }
@@ -248,17 +248,15 @@ void svuotaColonna(int **matrice, size_t righe, size_t colonne, size_t riga) {
  * @param colonne numero di colonne della matrice
  * @return Void
  */
-int eliminazioneDiGaussInt(int *arrayCoefficienti, int **matrice, size_t righe, size_t colonne) {
+int eliminazioneDiGaussInt(int *coefficienti, int **matrice, size_t righe, size_t colonne) {
     int index = 0;
     int scambi = 0;
-    if(arrayCoefficienti != NULL) {
-        for(int i = 0; i < righe; i++) {
-            arrayCoefficienti[i] = 1;
-        }
+    if(coefficienti != NULL) {
+        *coefficienti = 1;
     }
     while (!aScala(matrice, righe, colonne) && index < righe) {
         scambi += ordinaRighe(matrice, righe, colonne);
-        svuotaColonnaInt(arrayCoefficienti, matrice, righe, colonne, index);
+        svuotaColonnaInt(coefficienti, matrice, righe, colonne, index);
 
         index ++;
     }
@@ -440,15 +438,16 @@ int determinante(int **matriceOriginale, size_t ordine) {
     int **matrice = copiaMatriceDinamica(matriceOriginale, ordine, ordine);
     Frazione determinante;
     determinante.numeratore = 1;
-    determinante.denominatore = 1;
-    int *arrayCoefficienti = malloc(ordine * sizeof(int));
+
+    int coefficienti = 1;
+
+    int moltiplicatoreDeterminante = eliminazioneDiGaussInt(&coefficienti, matrice, ordine, ordine);
     
-    int moltiplicatoreDeterminante = eliminazioneDiGaussInt(arrayCoefficienti, matrice, ordine, ordine);
     for(int i = 0; i < ordine; i++) {
         determinante.numeratore *= matrice[i][i];
-        determinante.denominatore *= arrayCoefficienti[i];
     }
-    free(arrayCoefficienti);
+    determinante.denominatore = coefficienti;
+    
     free(matrice);
     riduciAiMinimiTermini(&determinante);
 
