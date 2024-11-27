@@ -11,7 +11,6 @@
 
 
 int main(void) {
-    
     int righe, colonne;
     
     printf("Inserisci il numero di righe: ");
@@ -31,37 +30,31 @@ int main(void) {
             scanf("%d", &matrice[i][j]);
         }
     }
-    
-
     /*
-    int mat[4][5] = {
-        {0,  3, -4,  1, 1},
-        {1, -1, -1,  1, 0},
-        {2, -2, -2,  2, 0},
-        {1, -1,  4, -1, 1}
+    int mat[3][3] = {
+        {1,  1,  1},
+        {0,  -1,  2},
+        {-1,  0,  1}
     };
-    righe = 4;
-    colonne = 5;
+    righe = 3;
+    colonne = 3;
     int **matrice = copiaMatriceStaticaInDinamica((int *)mat, righe, colonne);
-
     */
+
 
     printf("Matrice inserita:\n");
     stampaMatrice(matrice, righe, colonne);
 
-    // eliminazioneDiGauss(matrice, righe, colonne);
+    //eliminazioneDiGauss(matrice, righe, colonne);
+    //stampaMatrice(matrice, righe, colonne);
     // eliminazioneDiGaussJordan(matrice, righe, colonne);
     // risolviSistema(matrice, righe, colonne);
 
-    printf("determinante del piccione di tua mamma: %d", determinante(matrice, righe));
+    printf("Determinante: %d\n", determinante(matrice, righe));
 
     //printf("Matrice dopo l'eliminazione di Gauss:\n");
     // stampaMatrice(matrice, righe, colonne);
-
-    for (int i = 0; i < righe; i++) {
-        free(matrice[i]);
-    }
-    free(matrice);
+    cancellaMatrice(matrice, righe);
 
     return EXIT_SUCCESS;
 }

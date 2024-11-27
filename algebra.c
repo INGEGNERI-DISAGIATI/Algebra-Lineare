@@ -1,4 +1,6 @@
 #include "algebra.h"
+#include <stdio.h>
+#include <stdlib.h>
 
 /**
  * @brief Calcola il Massimo Comun Divisore di 2 numeri
@@ -43,27 +45,29 @@ int mcm(int a, int b) {
  * In caso contrario calcola il moltiplicatore per la combinazione lineare e dal moltiplicatore 
  * ricava i coefficienti di combinazione delle due righe, successivamente esegue la combinazione
  * lineare utilizzando i coefficienti.
+ * Ritorna il coefficiente di combinazione della rigaB
  *
  * @param rigaA primo array di interi
  * @param rigaB secondo array di interi
  * @param colonne numero di elementi dell'array
- * @return Void
+ * @return Int
  */
-void combinazioneLineare(int *rigaA, int *rigaB, size_t colonne) {
+int combinazioneLineare(int *rigaA, int *rigaB, size_t colonne) {
     int jPivot = individuaPivot(rigaA, colonne);
     
     if (rigaB[jPivot] == 0) {
-        return;
+        return 1;
     }
 
     int moltiplicatore = mcm(rigaA[jPivot], rigaB[jPivot]);
 
-    int coefficienteA = (moltiplicatore / rigaA[jPivot]);
     int coefficienteB = (moltiplicatore / rigaB[jPivot]);
+    int coefficienteA = (moltiplicatore / rigaA[jPivot]);
 
     for (size_t i = 0; i < colonne; i++) {
         rigaB[i] = (coefficienteB * rigaB[i]) - (coefficienteA * rigaA[i]);
     }
+    return coefficienteB;
 }
 
 /**
@@ -120,6 +124,7 @@ Tupla *contaZeri(int **matrice, size_t righe, size_t colonne) {
  * Esegue la copia della matrice in una matrice copia, dealloca ogni riga della matrice originale e gli assegna
  * il puntatore alla riga in posizione "zeri[i].indiceDiRiga" della matrice copia, infine dealloca il puntatore alla
  * matrice di copia e libera l'array di tuple
+ * Ritorna il numero di scambi di righe vicine necessari per ordinare le righe
  *
  * @param matrice matrice di interi
  * @param righe numero di righe della matrice
@@ -128,12 +133,14 @@ Tupla *contaZeri(int **matrice, size_t righe, size_t colonne) {
  */
 int ordinaRighe(int **matrice, size_t righe, size_t colonne) {
     Tupla *zeri = contaZeri(matrice, righe, colonne);
-    Tupla *originale = malloc(righe * sizeof(Tupla));
-    memcpy(originale, zeri, righe * sizeof(Tupla));
 
     qsort(zeri, righe, sizeof(Tupla), compare);
 
-    int scambi = contaScambi(originale, zeri, righe);
+    int scambi = 0;
+    for(int i = 0; i < righe; i++) {
+        scambi += abs(zeri[i].indiceDiRiga - i);
+    }
+    scambi /= 2;
 
     int **copia = copiaMatriceDinamica(matrice, righe, colonne);
     for (int i = 0; i < righe; i++) {
@@ -147,18 +154,6 @@ int ordinaRighe(int **matrice, size_t righe, size_t colonne) {
     return scambi;
 }
 
-
-int contaScambi(Tupla *originale, Tupla *copia, size_t righe) {
-    int scambi = 0;
-    
-    for (int i = 0; i < righe; i++) {
-        if(originale[i].indiceDiRiga != copia[i].indiceDiRiga) {
-            scambi ++;
-        }
-    }
-
-    return (scambi / 2);
-}
 
 
 
@@ -201,6 +196,32 @@ int individuaPivot(int *riga, size_t colonne) {
  *
  * Itera sulla matrice partendo dalla riga inserita e arriva fino al numero di righe massimo, nel mentre
  * esegue la combinazione lineare tra la riga dalla quale partire e tutte le righe sottostanti ad essa.
+ * Se viene passato come primo parametro un puntatore non nullo ad un array  (di lunghezza righe) allora
+ * moltiplica l'elemento i dell'array per il coefficiente di combinazione usato per modificare la riga i a
+ * attraverso le combinazioni lineari
+ * 
+ * @param arrayCoefficienti array di coefficienti di combinazione da modificare
+ * @param matrice matrice di interi
+ * @param righe numero di righe della matrice
+ * @param colonne numero di colonne della matrice
+ * @param righe riga dalla quale partire per svuotare la colonna
+ * @return Void
+ */
+void svuotaColonnaInt(int *coefficienti, int **matrice, size_t righe, size_t colonne, size_t riga) {
+    for (int i = riga + 1; i < righe; i++) {
+        int coefficiente = combinazioneLineare(matrice[riga], matrice[i], colonne);
+        if(coefficienti != NULL) {
+            *coefficienti *= coefficiente;
+        }
+    }
+}
+
+
+/**
+ * @brief Svuota la colonna sottostante al pivot corrente mediante la combinazione lineare
+ *
+ * Itera sulla matrice partendo dalla riga inserita e arriva fino al numero di righe massimo, nel mentre
+ * esegue la combinazione lineare tra la riga dalla quale partire e tutte le righe sottostanti ad essa.
  *
  * @param matrice matrice di interi
  * @param righe numero di righe della matrice
@@ -209,9 +230,38 @@ int individuaPivot(int *riga, size_t colonne) {
  * @return Void
  */
 void svuotaColonna(int **matrice, size_t righe, size_t colonne, size_t riga) {
-    for (int i = riga + 1; i < righe; i++) {
-        combinazioneLineare(matrice[riga], matrice[i], colonne);
+    svuotaColonnaInt(NULL, matrice, righe, colonne, riga);
+}
+
+/**
+ * @brief Esegue l'eliminazione di Gauss su una matrice generica (n * m) di interi
+ *
+ * Fin quando la matrice non è a scala, oppure è stata ciclata tutta la matrice, vengono ordinate le righe in
+ * base al numero di zeri che sono in ogni riga, e svuota la colonna sottostante alla riga corrente
+ * Se viene passato come primo parametro un puntatore non nullo ad un array (di lunghezza righe) allora modifica
+ * l'array in modo che l'elemento i corrisponde al prodotto dei coefficienti di combinazione usati sulla riga i
+ * durante la riduzione a scala
+ *
+ * @param arrayCoefficienti array di coefficienti di combinazione da modificare
+ * @param matrice matrice di interi
+ * @param righe numero di righe della matrice
+ * @param colonne numero di colonne della matrice
+ * @return Void
+ */
+int eliminazioneDiGaussInt(int *coefficienti, int **matrice, size_t righe, size_t colonne) {
+    int index = 0;
+    int scambi = 0;
+    if(coefficienti != NULL) {
+        *coefficienti = 1;
     }
+    while (!aScala(matrice, righe, colonne) && index < righe) {
+        scambi += ordinaRighe(matrice, righe, colonne);
+        svuotaColonnaInt(coefficienti, matrice, righe, colonne, index);
+
+        index ++;
+    }
+
+    return scambi;
 }
 
 /**
@@ -226,16 +276,7 @@ void svuotaColonna(int **matrice, size_t righe, size_t colonne, size_t riga) {
  * @return Void
  */
 int eliminazioneDiGauss(int **matrice, size_t righe, size_t colonne) {
-    int index = 0;
-    int scambi = 0;
-    while (!aScala(matrice, righe, colonne) && index < righe) {
-        scambi += ordinaRighe(matrice, righe, colonne);
-        svuotaColonna(matrice, righe, colonne, index);
-
-        index ++;
-    }
-
-    return scambi;
+    return eliminazioneDiGaussInt(NULL, matrice, righe, colonne);
 }
 
 /**
@@ -380,26 +421,38 @@ void risolviSistema(int **matrice, size_t righe, size_t colonne) {
 }
 
 /**
- * @brief Ruota di 180° una matrice
+ * @brief Calcola e restituisce il determinante di una matrice
  *
- * Nella prima iterazione della matrice inverte rispetto all'asse verticale le colonne della matrice 
- * e successivamente inverte secondo l'asse orizzontale le righe della matrice, modificando la matrice
- * originale in una matrice ruotata di 180°
+ * Calcola il determinante di una matrice riducendola a scala e facendo il prodotto
+ * degli elementi sulla diagonale principale, tenendo conto degli scambi fatti e dei
+ * coefficienti di combinazione utilizzati.
+ * 
  *
  * @param matrice matrice di interi
- * @param righe numero di righe della matrice
- * @param colonne numero di colonne della matrice
- * @return Void
+ * @param ordine ordine della matrice
+ * @return Int
  */
-int determinante(int **matrice, size_t ordine) {
-    int determinante = 1;
+int determinante(int **matriceOriginale, size_t ordine) {
+    /*if(!aScala(matrice, ordine, ordine)) {
+        return -1;
+    }*/
+    int **matrice = copiaMatriceDinamica(matriceOriginale, ordine, ordine);
+    Frazione determinante;
+    determinante.numeratore = 1;
 
-    int moltiplicatoreDeterminante = eliminazioneDiGauss(matrice, ordine, ordine);
+    int coefficienti = 1;
+
+    int moltiplicatoreDeterminante = eliminazioneDiGaussInt(&coefficienti, matrice, ordine, ordine);
+    
     for(int i = 0; i < ordine; i++) {
-        determinante *= matrice[i][i];
+        determinante.numeratore *= matrice[i][i];
     }
+    determinante.denominatore = coefficienti;
+    
+    free(matrice);
+    riduciAiMinimiTermini(&determinante);
 
-    return (moltiplicatoreDeterminante % 2 == 0) ? determinante : -determinante;
+    return (moltiplicatoreDeterminante % 2 == 0) ? determinante.numeratore : -1 * determinante.numeratore;
 }
 
 /**
@@ -552,7 +605,7 @@ void ruotaMatrice(int **matrice, size_t righe, size_t colonne) {
  * @param ordine numero di elementi dell'array
  * @return Void
  */
-void invertiTerminiNoti(int *vettore, size_t ordine) {
+void invertiArray(int *vettore, size_t ordine) {
     for (int i = 0; i < ordine / 2; i++) {
         int tmp = vettore[ordine - i - 1];
         vettore[ordine - i - 1] = vettore[i];
@@ -665,6 +718,21 @@ void riduciAiMinimiTermini(Frazione *frazione) {
         frazione->numeratore *= -1;
         frazione->denominatore *= -1;
     }
+}
+
+/**
+ * @brief Modifica la prima frazione moltiplicandola per la seconda e la semplifica
+ *
+ * Moltiplica il numeratore della prima per quello della seconda e il denominatore
+ * della prima per quello della seconda. Infine riduce ai minimi termini
+ *
+ * @param frazione puntatore a Frazione
+ * @return Void
+ */
+void moltiplicaFrazioni(Frazione *f1, Frazione *f2) {
+    f1->numeratore = f1->numeratore * f2->numeratore;
+    f1->denominatore = f1->denominatore * f2->denominatore;
+    riduciAiMinimiTermini(f1);
 }
 
 
