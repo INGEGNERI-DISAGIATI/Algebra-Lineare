@@ -42,10 +42,15 @@ int roucheCapelli(int **matrice, size_t righe, size_t colonne);
 int contaPivot(int **matrice, size_t righe, size_t colonne);
 void risolviSistema(int **matrice, size_t righe, size_t colonne);
 
+
 int contaScambi(Tupla *originale, Tupla *copia, size_t righe);
 int determinante(int **matrice, size_t ordine);
+int **riduciMatrice(int **matrice, size_t ordine, int dRiga, int dColonna);
+int sarrus(int **matrice, size_t ordine);
+int laPlace(int **matrice, size_t ordine);
 
 int **copiaMatriceDinamica(int **matrice, size_t numRighe, size_t numColonne);
+int gPow(int base, int exp);
 void ruotaMatrice(int **matrice, size_t righe, size_t colonne);
 void invertiTerminiNoti(int *vettore, size_t ordine);
 void shiftSinistraMatrice(int **matrice, size_t righe, size_t colonne);
