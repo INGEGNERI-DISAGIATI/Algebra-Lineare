@@ -168,12 +168,16 @@ void eliminazioneDiGaussJordan(int **matrice, size_t righe, size_t colonne) {
     }
 
     ruotaMatrice(matrice, righe, colonne);
-    shiftSinistraMatrice(matrice, righe, colonne);
-    
+    if (colonne == righe + 1) {
+        shiftSinistraMatrice(matrice, righe, colonne);
+    }
+
     eliminazioneDiGauss(matrice, righe, colonne);
     
     ruotaMatrice(matrice, righe, colonne);
-    shiftSinistraMatrice(matrice, righe, colonne);
+    if (colonne == righe + 1) {
+        shiftSinistraMatrice(matrice, righe, colonne);
+    }
     ordinaRighe(matrice, righe, colonne);
 }
 
