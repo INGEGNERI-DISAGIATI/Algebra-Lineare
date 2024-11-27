@@ -228,7 +228,7 @@ void risolviSistema(int **matrice, size_t righe, size_t colonne) {
     }
 
     int pivot = contaPivot(copia, righe, colonne);
-
+    eliminazioneDiGaussJordan(copia, righe, colonne);
     
 
     Frazione *soluzioni = malloc(pivot * sizeof(Frazione));
