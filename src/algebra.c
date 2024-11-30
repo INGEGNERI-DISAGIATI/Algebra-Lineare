@@ -168,17 +168,92 @@ void eliminazioneDiGaussJordan(int **matrice, size_t righe, size_t colonne) {
     }
 
     ruotaMatrice(matrice, righe, colonne);
-    if (colonne == righe + 1) {
-        shiftSinistraMatrice(matrice, righe, colonne);
-    }
-
+    shiftSinistraMatrice(matrice, righe, colonne);
+    
     eliminazioneDiGauss(matrice, righe, colonne);
     
     ruotaMatrice(matrice, righe, colonne);
-    if (colonne == righe + 1) {
-        shiftSinistraMatrice(matrice, righe, colonne);
-    }
+    shiftSinistraMatrice(matrice, righe, colonne);
     ordinaRighe(matrice, righe, colonne);
+}
+
+/**
+    TODO: fare documentazione.
+*/
+int **creaMatriceIdentita(size_t ordine) {
+    int **identita = creaMatrice(ordine, ordine);
+    
+    for (int i = 0; i < ordine; i++) {
+        identita[i][i] = 1;
+    }
+
+    return identita;
+}
+
+
+/**
+    TODO: fare documentazione
+*/
+int **affiancaMatrice(int **matrice1, size_t colonne1, int **matrice2, size_t colonne2, size_t righe) {
+    int **copia = creaMatrice(righe, (colonne1 + colonne2));
+    
+    for (int i = 0; i < righe; i++) {
+        for (int j = 0; j < (colonne1 + colonne2); j++) {
+            if (j < colonne1) {
+                copia[i][j] = matrice1[i][j];
+            }
+            else {
+                copia[i][j] = matrice2[i][j - colonne1];
+            }
+        }
+    }
+
+    return copia;
+}
+
+/**
+    TODO: fare dumentazione.
+*/
+Frazione **matriceInversa(int **originale, size_t ordine) {
+    int **identita = creaMatriceIdentita(ordine);
+    int **matriceAffiancata = affiancaMatrice(originale, ordine, identita, ordine, ordine);
+
+    cancellaMatrice(identita, ordine);
+
+    eliminazioneDiGauss(matriceAffiancata, ordine, (ordine * 2));
+
+    ruotaMatrice(matriceAffiancata, ordine, ordine);
+    for (int i = 0; i < ordine; i++) {
+        shiftSinistraMatrice(matriceAffiancata, ordine, ordine);
+    }
+    
+    eliminazioneDiGauss(matriceAffiancata, ordine, ordine);
+    
+    ruotaMatrice(matriceAffiancata, ordine, ordine);
+    
+    for (int i = 0; i < ordine; i++) {
+        shiftSinistraMatrice(matriceAffiancata, ordine, ordine);
+    }
+    ordinaRighe(matriceAffiancata, ordine, (ordine * 2));
+
+    Frazione **inversa = malloc(ordine * sizeof(Frazione *));
+    for (int i = 0; i < ordine; i++) {
+        inversa[i] = malloc(ordine * sizeof(Frazione));
+
+        int pivot = matriceAffiancata[i][i];
+
+        for (int j = 0; j < ordine * 2; j++) {
+            inversa[i][j].numeratore = matriceAffiancata[i][j + ordine];
+            inversa[i][j].denominatore = pivot;
+            
+            riduciAiMinimiTermini(&inversa[i][j]);
+        }
+    }
+    cancellaMatrice(matriceAffiancata, ordine);
+    // for (int i = 0; i < ordine; i++) {
+    // }
+
+    return inversa;
 }
 
 int roucheCapelli(int **matrice, size_t righe, size_t colonne) {
@@ -232,7 +307,7 @@ void risolviSistema(int **matrice, size_t righe, size_t colonne) {
     }
 
     int pivot = contaPivot(copia, righe, colonne);
-    eliminazioneDiGaussJordan(copia, righe, colonne);
+
     
 
     Frazione *soluzioni = malloc(pivot * sizeof(Frazione));
@@ -510,4 +585,91 @@ void scambiaRighe(int **matrice, int rigaA, int rigaB) {
     int *scambio = matrice[rigaA];
     matrice[rigaA] = matrice[rigaB];
     matrice[rigaB] = scambio;
+}
+
+
+
+
+
+
+// ----------------------------------
+
+/**
+    TODO: fare documentazione
+*/
+int **inserisciMatriceNM(size_t *righe, size_t *colonne) {
+    int **matrice;
+    
+    printf("Inserisci il numero di righe: ");
+    scanf("%zu", righe);
+    printf("Inserisci il numero di colonne: ");
+    scanf("%zu", colonne);
+    
+    matrice = (int **)malloc(*righe * sizeof(int *));
+    if (matrice == NULL) {
+        printf("Errore nell'allocazione della memoria\n");
+        return NULL;
+    }
+    
+    for (size_t i = 0; i < *righe; i++) {
+        matrice[i] = (int *)malloc(*colonne * sizeof(int));
+        if (matrice[i] == NULL) {
+            printf("Errore nell'allocazione della memoria\n");
+    
+            for (size_t j = 0; j < i; j++) {
+                free(matrice[j]);
+            }
+            free(matrice);
+            return NULL;
+        }
+    }
+    
+    printf("Inserisci i valori della matrice:\n");
+    for (size_t i = 0; i < *righe; i++) {
+        for (size_t j = 0; j < *colonne; j++) {
+            printf("Elemento [%zu][%zu]: ", i, j);
+            scanf("%d", &matrice[i][j]);
+        }
+    }
+    
+    return matrice;
+}
+
+/**
+    TODO: fare documentazione
+*/
+int **inserisciMatriceNN(size_t *ordine) {
+    int **matrice;
+    
+    printf("Inserisci l'ordine della matrice quadrata: ");
+    scanf("%zu", ordine);
+    
+    matrice = (int **)malloc(*ordine * sizeof(int *));
+    if (matrice == NULL) {
+        printf("Errore nell'allocazione della memoria\n");
+        return NULL;
+    }
+    
+    for (size_t i = 0; i < *ordine; i++) {
+        matrice[i] = (int *)malloc(*ordine * sizeof(int));
+        if (matrice[i] == NULL) {
+            printf("Errore nell'allocazione della memoria\n");
+    
+            for (size_t j = 0; j < i; j++) {
+                free(matrice[j]);
+            }
+            free(matrice);
+            return NULL;
+        }
+    }
+    
+    printf("Inserisci i valori della matrice:\n");
+    for (size_t i = 0; i < *ordine; i++) {
+        for (size_t j = 0; j < *ordine; j++) {
+            printf("Elemento [%zu][%zu]: ", i, j);
+            scanf("%d", &matrice[i][j]);
+        }
+    }
+    
+    return matrice;
 }
