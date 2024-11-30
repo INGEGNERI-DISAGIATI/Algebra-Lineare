@@ -5,8 +5,7 @@
 //function prototypes
 
 int main(void) {
-    Frazione **inversa;
-    size_t ordine;
+    size_t ordine = 3;
     
     // Input matrice quadrata
     int matricee[3][3] = {
@@ -15,10 +14,10 @@ int main(void) {
         {0, 3, 1}
     };
     
-    int **matrice = copiaMatriceStaticaInDinamica((int *)matricee, 3, 3);
-
+    int **matrice = copiaMatriceStaticaInDinamica((int *)matricee, ordine, ordine);
+    stampaMatrice(matrice, ordine, ordine);
     // Calcolo matrice inversa
-    inversa = matriceInversa(matrice, ordine);
+    Frazione **inversa = matriceInversa(matrice, ordine);
     if (inversa == NULL) {
         printf("Impossibile calcolare la matrice inversa\n");
         // Libera memoria matrice originale

@@ -148,11 +148,14 @@ int eliminazioneDiGaussInt(int *coefficienti, int **matrice, size_t righe, size_
         *coefficienti = 1;
     }
     while (!aScala(matrice, righe, colonne) && index < righe) {
-        scambi += ordinaRighe(matrice, righe, colonne);
         svuotaColonnaInt(coefficienti, matrice, righe, colonne, index);
+        scambi += ordinaRighe(matrice, righe, colonne);
 
         index ++;
     }
+
+    //puts("Dopo Gauss");
+    //stampaMatrice(matrice, righe, colonne);
 
     return scambi;
 }
@@ -163,23 +166,31 @@ int eliminazioneDiGauss(int **matrice, size_t righe, size_t colonne) {
 
 
 void eliminazioneDiGaussJordan(int **matrice, size_t righe, size_t colonne) {
+    //puts("- Entro in gauss jordan");
     if (!aScala(matrice, righe, colonne)) {
         return;
     }
-
+    
     ruotaMatrice(matrice, righe, colonne);
     if(colonne == righe + 1) {
         shiftSinistraMatrice(matrice, righe, colonne);
     }
-
+    //puts("Matrice dopo ruotamento e shift");
+    //stampaMatrice(matrice, righe, colonne);
+    
     eliminazioneDiGauss(matrice, righe, colonne);
     
     ruotaMatrice(matrice, righe, colonne);
     if(colonne == righe + 1) {
         shiftSinistraMatrice(matrice, righe, colonne);
     }
+    //puts("Matrice dopo ruotamento e shift");
+    //stampaMatrice(matrice, righe, colonne);
     
     ordinaRighe(matrice, righe, colonne);
+
+    //puts("Dopo Gauss Jordan");
+    //stampaMatrice(matrice, righe, colonne);
 }
 
 /**
@@ -222,22 +233,21 @@ int **affiancaMatrice(int **matrice1, size_t colonne1, int **matrice2, size_t co
 Frazione **matriceInversa(int **originale, size_t ordine) {
     int **identita = creaMatriceIdentita(ordine);
     int **matriceAffiancata = affiancaMatrice(originale, ordine, identita, ordine, ordine);
-
+    
     cancellaMatrice(identita, ordine);
 
     eliminazioneDiGauss(matriceAffiancata, ordine, (ordine * 2));
-
-    ruotaMatrice(matriceAffiancata, ordine, ordine);
+    
+    ruotaMatrice(matriceAffiancata, ordine, (ordine * 2));
     for (int i = 0; i < ordine; i++) {
-        shiftSinistraMatrice(matriceAffiancata, ordine, ordine);
+        shiftSinistraMatrice(matriceAffiancata, ordine, ordine * 2);
     }
     
-    eliminazioneDiGauss(matriceAffiancata, ordine, ordine);
-    
-    ruotaMatrice(matriceAffiancata, ordine, ordine);
+    eliminazioneDiGauss(matriceAffiancata, ordine, (ordine * 2));
+    ruotaMatrice(matriceAffiancata, ordine, (ordine * 2));
     
     for (int i = 0; i < ordine; i++) {
-        shiftSinistraMatrice(matriceAffiancata, ordine, ordine);
+        shiftSinistraMatrice(matriceAffiancata, ordine, (ordine * 2));
     }
     ordinaRighe(matriceAffiancata, ordine, (ordine * 2));
 
@@ -247,7 +257,7 @@ Frazione **matriceInversa(int **originale, size_t ordine) {
 
         int pivot = matriceAffiancata[i][i];
 
-        for (int j = 0; j < ordine * 2; j++) {
+        for (int j = 0; j < ordine; j++) {
             inversa[i][j].numeratore = matriceAffiancata[i][j + ordine];
             inversa[i][j].denominatore = pivot;
             
@@ -255,8 +265,6 @@ Frazione **matriceInversa(int **originale, size_t ordine) {
         }
     }
     cancellaMatrice(matriceAffiancata, ordine);
-    // for (int i = 0; i < ordine; i++) {
-    // }
 
     return inversa;
 }
