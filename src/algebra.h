@@ -401,38 +401,131 @@ void riduciAiMinimiTermini(Frazione *frazione);
  */
 void moltiplicaFrazioni(Frazione *f1, Frazione *f2);
 
-
-//DONAZIONE DI MR.MAIO NON DOCUMENTATA
-int *creaVettoreRiga(size_t dimensione);
-int **creaMatrice(size_t numRighe, size_t numColonne);
-int *copiaVettoreRiga(int riga[], size_t numColonne);
-int **copiaMatriceStaticaInDinamica(int *pointerTo00, size_t numRighe, size_t numColonne);
-int **copiaMatriceDinamica(int **matrice, size_t numRighe, size_t numColonne);
-
-void cancellaVettoreRiga(int *riga);
-void cancellaMatrice(int **matrice, size_t numRighe);
-
-int **MatriceTrasposta(int **matrice, size_t numRighe, size_t numColonne);
-void scambiaRighe(int **matrice, int rigaA, int rigaB);
-
 /**
-    TODO: fare documentazione
+ * @brief Crea una matrice n * m con valori inseriti dall'utente
+ *
+ * Chiede all'utente le righe e le colonne della matrice che vuole inserire, crea dinamicamente la matrice e chiede
+ * all'utente di inserire valore per valore al suo interno, dopo aver fatto ciò, modifica i due puntatori delle
+ * righe e delle colonne con le misure della matrice
+ *
+ * @param righe righe della matrice
+ * @param colonne colonne della matrice
+ * @return Int **
 */
 int **inserisciMatriceNM(size_t *righe, size_t *colonne);
+
+/**
+ * @brief Crea una matrice n * n con valori inseriti dall'utente
+ *
+ * Chiede all'utente l'ordine della matrice che vuole inserire, crea dinamicamente la matrice e chiede
+ * all'utente di inserire valore per valore al suo interno, dopo aver fatto ciò, modifica il puntatore dell'ordine
+ *
+ * @param ordine ordine della matrice
+ * @return Int **
+*/
 int **inserisciMatriceNN(size_t *ordine);
 
 
 /**
-    TODO: fare documentazione.
+ * @brief Restituisce una matrice identità dell'ordine dato
+ *
+ * Crea una matrice dinamica riempita con tutti zeri e sulla diagonale principale inserisce 1.
+ *
+ * @param ordine ordine della matrice identità
+ * @return Int **
 */
 int **creaMatriceIdentita(size_t ordine);
+
 /**
-    TODO: fare documentazione
+ * @brief Affianca 2 matrici 
+ *
+ * Crea una matrice che ha come numero di righe il parametro passato all'interno della funzione e come numero
+ * di colonne colonne la somma del numero di colonne delle 2 matrici.
+ * Copia al suo interno tutti gli elementi della matrice1 e quelli della matrice2 e la restituisce.
+ *
+ * @param matrice1 matrice a cui viene affiancata matrice2
+ * @param colonne1 colonne della matrice 1
+ * @param matrice2 matrice che viene affiancata alla matrice1
+ * @param colonne2 colonne della matrice 2
+ * @param righe righe delle 2 matrici
+ * @return Int **
 */
 int **affiancaMatrice(int **matrice1, size_t colonne1, int **matrice2, size_t colonne2, size_t righe);
+
 /**
-    TODO: fare dumentazione.
+ * @brief Affianca 2 matrici 
+ *
+ * Affianca alla matrice stessa la matrice identità (creata tramite creaMatriceIdentità) utilizzando il metodo 
+ * affiancaMatrice, riduce la prima metà della matrice ad una matrice identità tramite il metodo di Gauss e Gauss Jordan.
+ * Successivamente inserisce la seconda metà della matrice affiancata (che per conseguenza dell'eliminaizone di Gauss sarà
+ * la matrice inversa di quella iniziale) in una matrice di frazioni, ruducendo opportunamente ogni frazione ai minimi termini.
+ *
+ * @param matrice matrice della quale verrà calcolata l'inversa
+ * @param ordine ordine della matrice
+ * @return Frazione **
 */
-Frazione **matriceInversa(int **originale, size_t ordine);
+Frazione **matriceInversa(int **matrice, size_t ordine);
+
+/**
+ * @brief Stampa la matrice di frazioni
+ *
+ * Se il denominatore è 1, stampa solo il numeratore, altrimenti lo stampa a frazione.
+ *
+ * @param matrice matrice di Frazioni
+ * @param righe righe della matrice
+ * @param colonne righe delle colonne
+ * @return Void
+*/
+void stampaMatriceDiFrazioni(Frazione **matrice, size_t righe, size_t colonne);
+
+
+
+//DONAZIONE DI @Framaio25
+/**
+    TODO: @Framaio25 -> fare la documentazione
+*/
+int *creaVettoreRiga(size_t dimensione);
+
+/**
+    TODO: @Framaio25 -> fare la documentazione
+*/
+int **creaMatrice(size_t numRighe, size_t numColonne);
+
+/**
+    TODO: @Framaio25 -> fare la documentazione
+*/
+int *copiaVettoreRiga(int riga[], size_t numColonne);
+
+/**
+    TODO: @Framaio25 -> fare la documentazione
+*/
+int **copiaMatriceStaticaInDinamica(int *pointerTo00, size_t numRighe, size_t numColonne);
+
+/**
+    TODO: @Framaio25 -> fare la documentazione
+*/
+int **copiaMatriceDinamica(int **matrice, size_t numRighe, size_t numColonne);
+
+
+/**
+    TODO: @Framaio25 -> fare la documentazione
+*/
+void cancellaVettoreRiga(int *riga);
+
+/**
+    TODO: @Framaio25 -> fare la documentazione
+*/
+void cancellaMatrice(int **matrice, size_t numRighe);
+
+
+/**
+    TODO: @Framaio25 -> fare la documentazione
+*/
+int **MatriceTrasposta(int **matrice, size_t numRighe, size_t numColonne);
+
+/**
+    TODO: @Framaio25 -> fare la documentazione
+*/
+void scambiaRighe(int **matrice, int rigaA, int rigaB);
 
 #endif

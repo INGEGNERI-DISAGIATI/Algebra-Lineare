@@ -230,9 +230,9 @@ int **affiancaMatrice(int **matrice1, size_t colonne1, int **matrice2, size_t co
 /**
     TODO: fare dumentazione.
 */
-Frazione **matriceInversa(int **originale, size_t ordine) {
+Frazione **matriceInversa(int **matrice, size_t ordine) {
     int **identita = creaMatriceIdentita(ordine);
-    int **matriceAffiancata = affiancaMatrice(originale, ordine, identita, ordine, ordine);
+    int **matriceAffiancata = affiancaMatrice(matrice, ordine, identita, ordine, ordine);
     
     cancellaMatrice(identita, ordine);
 
@@ -685,4 +685,19 @@ int **inserisciMatriceNN(size_t *ordine) {
     }
     
     return matrice;
+}
+
+
+void stampaMatriceDiFrazioni(Frazione **matrice, size_t righe, size_t colonne) {
+    
+    for (size_t i = 0; i < righe; i++) {
+        for (size_t j = 0; j < colonne; j++) {
+            if (matrice[i][j].denominatore == 1) {
+                printf("%d\t", matrice[i][j].numeratore);
+            } else {
+                printf("%d/%d\t", matrice[i][j].numeratore, matrice[i][j].denominatore);
+            }
+        }
+        printf("\n");
+    }
 }
