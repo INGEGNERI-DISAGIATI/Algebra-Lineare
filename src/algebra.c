@@ -437,6 +437,64 @@ int laPlace(int **matrice, size_t ordine) {
     return det;
 }
 
+int prodottoVettori(int *vettore1, int *vettore2, size_t righe) {
+    int scalare = 0;
+    
+    for (int i = 0; i < righe; i++) {
+        scalare += vettore1[i] * vettore2[i];
+    }
+
+    return scalare;
+}
+
+int *prodottoVettoreScalare(int *vettore, size_t righe, int scalare) {
+    int *vettoreScalare = malloc(righe * sizeof(int));
+    
+    for (int i = 0; i < righe; i++) {
+        vettoreScalare[i] = scalare * vettore[i];
+    }
+
+    return vettoreScalare;
+}
+
+int **prodottoMatrici(int **matrice1, int **matrice2, size_t righe1, size_t colonne1Righe2, size_t colonne2) {
+    int **prodotto = creaMatrice(righe1, colonne2);
+
+    for (int i = 0; i < righe1; i++) {
+        for (int j = 0; j < colonne2; j++) {
+            for (int k = 0; k < colonne1Righe2; k++) {
+                prodotto[i][j] += matrice1[i][k] * matrice2[k][j];
+            }
+        }
+    }
+
+    return prodotto;
+}
+
+int **prodottoMatriceScalare(int **matrice, size_t righe, size_t colonne, int scalare) {
+    int **prodottoMatrice = creaMatrice(righe, colonne);
+    
+    for (int i = 0; i < righe; i++) {
+        for (int j = 0; j < colonne; j++) {
+            prodottoMatrice[i][j] = scalare * matrice[i][j];
+        }
+    }
+
+    return prodottoMatrice;
+}
+
+
+int *estraiColonna(int **matrice, size_t righe, int colonna) {
+    int *colonnaEstratta = malloc(righe * sizeof(int));
+    
+    for (int i = 0; i < righe; i++) {
+        colonnaEstratta[i] = matrice[i][colonna];
+    }
+
+    return colonnaEstratta;
+}
+
+
 void ruotaMatrice(int **matrice, size_t righe, size_t colonne) {
     for (int i = 0; i < righe; i++) {
         for (int j = 0; j < colonne / 2; j++) {

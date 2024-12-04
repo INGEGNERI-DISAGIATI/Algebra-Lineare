@@ -286,7 +286,7 @@ int sarrus(int **matrice, size_t ordine);
 int laPlace(int **matrice, size_t ordine);
 
 /**
- * @brief goofy ass POW [credit: Mr. Maio]
+ * @brief goofy ahh POW [credit: @Framaio25]
  *
  * funzione alternativa di pow per interi 
  *
@@ -332,6 +332,76 @@ void invertiArray(int *vettore, size_t ordine);
  * @return Void
  */
 void shiftSinistraMatrice(int **matrice, size_t righe, size_t colonne);
+
+
+
+/**
+ * @brief Moltiplica tra di loro 2 vettori e restituisce uno scalare
+ *
+ * Itera per la lunghezza dell'array e somma ad una variabile il prodotto dell'elemento i-esimo del 
+ * vettore 1 con l'elemento i-esimo del vettore 2, venendo successivamente restituita.
+ *
+ * @param vettore1 primo vettore di interi
+ * @param vettore2 secondo vettore di interi
+ * @param size numero di elementi del vettore
+ * @return Int
+ */
+int prodottoVettori(int *vettore1, int *vettore2, size_t size);
+
+/**
+ * @brief Moltiplica il vettore per uno scalare
+ *
+ * Itera per la lunghezza dell'array e l'i-esimo elemento del vettore con lo scalare e restituisce un nuovo vettore
+ *
+ * @param vettore primo vettore di interi
+ * @param size numero di elementi del vettore
+ * @param scalare moltiplicatore di ogni elemento del vettore
+ * @return Int *
+ */
+int *prodottoVettoreScalare(int *vettore, size_t size, int scalare);
+
+/**
+ * @brief Moltiplica 2 matrici
+ *
+ * Esegue il prodotto riga per colonna di due matrici, (una m * n e l'altra n * k). All'elemento i,j 
+ * della matrice risultato (m * k); aggiunge la somma degli elementi della prima riga moltiplicati per quelli della seconda
+ * e restituisce una nuova matrice
+ *
+ * @param matrice1 prima matrice di interi
+ * @param matrice2 seconda matrice di interi
+ * @param righe1 righe della prima matrice
+ * @param colonne1righe2 colonne della prima matrice e righe della seconda colonna
+ * @param colonne2 colonne della seconda matrice
+ * @return Int **
+ */
+int **prodottoMatrici(int **matrice1, int **matrice2, size_t righe1, size_t colonne1Righe2, size_t colonne2);
+
+/**
+ * @brief Moltiplica una matrice per uno scalare
+ *
+ * Itera su tutta la matrice e moltiplica ogni elemento i,j della matrice per uno scalare e restituisce una nuova matrice
+ *
+ * @param matrice matrice di interi
+ * @param righe numero di righe della matrice
+ * @param colonne numero di colonne della seconda matrice
+ * @param scalare moltiplicatore della matrice
+ * @return Int **
+ */
+int **prodottoMatriceScalare(int **matrice, size_t righe, size_t colonne, int scalare);
+
+/**
+ * @brief estrae una colonna da una matrice
+ *
+ * Assegna ad un array gli elementi della
+ *
+ * @param matrice matrice di interi
+ * @param righe numero di righe della matrice
+ * @param colonna colonna da estrarre
+ * @return Int **
+ */
+int *estraiColonna(int **matrice, size_t righe, int colonna);
+
+
 
 
 /**
@@ -389,7 +459,6 @@ int compare(const void *a, const void *b);
  */
 void riduciAiMinimiTermini(Frazione *frazione);
 
-
 /**
  * @brief Modifica la prima frazione moltiplicandola per la seconda e la semplifica
  *
@@ -424,7 +493,6 @@ int **inserisciMatriceNM(size_t *righe, size_t *colonne);
  * @return Int **
 */
 int **inserisciMatriceNN(size_t *ordine);
-
 
 /**
  * @brief Restituisce una matrice identità dell'ordine dato
