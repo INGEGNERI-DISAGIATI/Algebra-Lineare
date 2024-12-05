@@ -231,6 +231,10 @@ int **affiancaMatrice(int **matrice1, size_t colonne1, int **matrice2, size_t co
     TODO: fare dumentazione.
 */
 Frazione **matriceInversa(int **matrice, size_t ordine) {
+    if (determinante(matrice, ordine) == 0) {
+        printf("La matrice è SINGOLARE. Impossibile trovare l'Inversa\n");
+        return NULL;
+    }
     int **identita = creaMatriceIdentita(ordine);
     int **matriceAffiancata = affiancaMatrice(matrice, ordine, identita, ordine, ordine);
     
@@ -340,7 +344,7 @@ void risolviSistema(int **matrice, size_t righe, size_t colonne) {
         puts("");
     }
 
-    free(copia);
+    cancellaMatrice(copia, righe);
 }
 
 int determinante(int **matriceOriginale, size_t ordine) {
@@ -360,7 +364,7 @@ int determinante(int **matriceOriginale, size_t ordine) {
     }
     determinante.denominatore = coefficienti;
     
-    free(matrice);
+    cancellaMatrice(matrice, ordine);
     riduciAiMinimiTermini(&determinante);
 
     return (moltiplicatoreDeterminante % 2 == 0) ? determinante.numeratore : -1 * determinante.numeratore;
@@ -591,7 +595,7 @@ int *creaVettoreRiga(size_t dimensione) {
 }
 
 int **creaMatrice(size_t numRighe, size_t numColonne) {
-    int **ret = calloc(numRighe, sizeof(int *));
+    int **ret = malloc(numRighe * sizeof(int *));
     if (ret == NULL) {
         puts("Errore di allocazione della memoria in creaMatrice");
         return ret;
@@ -640,6 +644,15 @@ void cancellaMatrice(int **matrice, size_t numRighe) {
     for (size_t i = 0; i < numRighe; i++) {
         cancellaVettoreRiga(matrice[i]);
     }
+
+    free(matrice);
+}
+void cancellaMatrice_f(Frazione **matrice, size_t numRighe) {
+    for (size_t i = 0; i < numRighe; i++) {
+        free(matrice[i]);
+    }
+
+    free(matrice);
 }
 
 int **MatriceTrasposta(int **matrice, size_t numRighe, size_t numColonne) {

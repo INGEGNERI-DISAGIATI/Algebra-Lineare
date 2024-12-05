@@ -248,7 +248,8 @@ int determinante(int **matrice, size_t ordine);
 /**
  * @brief Riduce la matrice eliminando la riga i e la colonna j
  *
- * Risolve a scala il sistema utilizzando la risoluzione verso il basso e verso l'alto
+ * Elimina la riga i e la colonna j e viene utilizzata all'interno della funzione che calcola il determinante
+ * tramite laplace
  *
  * @param matrice matrice di interi
  * @param ordine ordine della matrice
@@ -585,6 +586,10 @@ void cancellaVettoreRiga(int *riga);
 */
 void cancellaMatrice(int **matrice, size_t numRighe);
 
+/**
+    TODO: @Framaio25 -> fare la documentazione
+*/
+void cancellaMatrice_f(Frazione **matrice, size_t numRighe);
 
 /**
     TODO: @Framaio25 -> fare la documentazione
