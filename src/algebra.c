@@ -239,6 +239,7 @@ Frazione **matriceInversa(int **matrice, size_t ordine) {
     int **matriceAffiancata = affiancaMatrice(matrice, ordine, identita, ordine, ordine);
     
     cancellaMatrice(identita, ordine);
+    identita = NULL;
 
     eliminazioneDiGauss(matriceAffiancata, ordine, (ordine * 2));
     
@@ -269,6 +270,7 @@ Frazione **matriceInversa(int **matrice, size_t ordine) {
         }
     }
     cancellaMatrice(matriceAffiancata, ordine);
+    matriceAffiancata = NULL;
 
     return inversa;
 }
@@ -345,6 +347,7 @@ void risolviSistema(int **matrice, size_t righe, size_t colonne) {
     }
 
     cancellaMatrice(copia, righe);
+    copia = NULL;
 }
 
 int determinante(int **matriceOriginale, size_t ordine) {
@@ -365,6 +368,7 @@ int determinante(int **matriceOriginale, size_t ordine) {
     determinante.denominatore = coefficienti;
     
     cancellaMatrice(matrice, ordine);
+    matrice = NULL;
     riduciAiMinimiTermini(&determinante);
 
     return (moltiplicatoreDeterminante % 2 == 0) ? determinante.numeratore : -1 * determinante.numeratore;
@@ -607,7 +611,11 @@ int **creaMatrice(size_t numRighe, size_t numColonne) {
 }
 
 int *copiaVettoreRiga(int riga[], size_t numColonne) {
-    int *ret = creaVettoreRiga(numColonne);
+    int *ret = malloc(numColonne * sizeof(int));
+    if (ret == NULL) {
+        puts("Errore di allocazione della memoria in copiaVettoreRiga");
+        return ret;
+    }
     for (int i = 0; i < numColonne; i++) {
         ret[i] = riga[i];
     }
@@ -616,6 +624,10 @@ int *copiaVettoreRiga(int riga[], size_t numColonne) {
 
 int **copiaMatriceStaticaInDinamica(int *pointerTo00, size_t numRighe, size_t numColonne) {
     int **ret = creaMatrice(numRighe, numColonne);
+    if (ret == NULL) {
+        puts("Errore di allocazione della memoria in copiaMatriceStaticaInDinamica");
+        return ret;
+    }
     int offset = 0;
     for (size_t i = 0; i < numRighe; i++) {
         for (size_t j = 0; j < numColonne; j++) {
@@ -628,6 +640,10 @@ int **copiaMatriceStaticaInDinamica(int *pointerTo00, size_t numRighe, size_t nu
 
 int **copiaMatriceDinamica(int **matrice, size_t numRighe, size_t numColonne) {
     int **ret = creaMatrice(numRighe, numColonne);
+    if (ret == NULL) {
+        puts("Errore di allocazione della memoria in copiaMatriceDinamica");
+        return ret;
+    }
     for (size_t i = 0; i < numRighe; i++) {
         for (size_t j = 0; j < numColonne; j++) {
             ret[i][j] = matrice[i][j];
@@ -644,19 +660,22 @@ void cancellaMatrice(int **matrice, size_t numRighe) {
     for (size_t i = 0; i < numRighe; i++) {
         cancellaVettoreRiga(matrice[i]);
     }
-
     free(matrice);
 }
 void cancellaMatrice_f(Frazione **matrice, size_t numRighe) {
     for (size_t i = 0; i < numRighe; i++) {
         free(matrice[i]);
+        matrice[i] = NULL;
     }
-
     free(matrice);
 }
 
 int **MatriceTrasposta(int **matrice, size_t numRighe, size_t numColonne) {
     int **ret = creaMatrice(numColonne, numRighe);
+    if (ret == NULL) {
+        puts("Errore di allocazione della memoria in MatriceTrasposta");
+        return ret;
+    }
     for (size_t i = 0; i < numColonne; i++) {
         for (size_t j = 0; j < numRighe; j++) {
             ret[i][j] = matrice[j][i];
