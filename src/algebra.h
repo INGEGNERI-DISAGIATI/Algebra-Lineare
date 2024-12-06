@@ -551,53 +551,132 @@ void stampaMatriceDiFrazioni(Frazione **matrice, size_t righe, size_t colonne);
 
 //DONAZIONE DI @Framaio25
 /**
-    TODO: @Framaio25 -> fare la documentazione
-*/
+ * @brief Alloca dinamicamente un array di interi
+ *
+ * Alloca dinamicamente un array di interi e inizializza tutti i suoi valori a zero, se l'allocazione fallisce 
+ * restituisce NULL altrimenti restituisce il puntatore al primo elemento dell'array di interi
+ * 
+ * @param dimensione numero di componenti dell'array
+ * @return Int *
+ */
 int *creaVettoreRiga(size_t dimensione);
 
 /**
-    TODO: @Framaio25 -> fare la documentazione
-*/
+ * @brief Alloca dinamicamente una matrice di interi
+ *
+ * Alloca dinamicamente una matrice di interi in cui ogni elemento è inzializzato a zero, per fare ciò alloca 
+ * dinamicamente un array di puntatori a intero di dimensione numRighe, e nell'iesimo elemento di questo array 
+ * viene inserito il puntatore al primo elemento di un array di interi di dimensione numColonne allocato dinamicamente 
+ * tramite la funzione creaVettoreRiga, se l'allocazione dell array di puntatori a intero e di tutti gli array di interi 
+ * riesce restituisce il puntatore al primo elemento dell array di puntatori a interi, altrimenti restituisce NULL
+ *
+ * @param numRighe numero di righe della matrice 
+ * @param numColonne numero di colonne della matrice
+ * @return Int **
+ */
 int **creaMatrice(size_t numRighe, size_t numColonne);
 
 /**
-    TODO: @Framaio25 -> fare la documentazione
-*/
+ * @brief Copia gli elementi di un array (statico o dinamico) in un altro array dinamico
+ *
+ * Alloca dinamicamente un array di interi di dimensione numColonne tramite la funzione creVettoreRiga, se l'allocazione del 
+ * nuovo vettore riga riesce al suo iesimo elemento viene assegnato l'iesimo elemento dell'array passatogli come parametro 
+ * (riga[]) e restituisce il puntatore al primo elemento della copia, altrimenti restituisce NULL
+ *
+ * @param riga[] il puntatore al primo elemento dell array da copiare
+ * @param numColonne il numero di elementi del vettore da copiare
+ * @return Int **
+ */
 int *copiaVettoreRiga(int riga[], size_t numColonne);
 
 /**
-    TODO: @Framaio25 -> fare la documentazione
-*/
+ * @brief Copia gli elementi di una matrice statica in una matrice dinamica
+ *
+ * Alloca dinamicamente una matrice di interi di righe numRighe e di colonne numColonne tramite la funzione creaMatrice, 
+ * se l'allocazione riesce inizia a riempire la matrice dinamica utilizzando gli elementi della matrice statica passata alla
+ * funzione con un cast come puntatore ad array di interi, per elaborare il vettore riga come una matrice, inzializza un offset
+ * a 0, a ogni ijesima iterazione questo offset viene incrementato di uno, sfruttando la contiguità in memoria delle matrici statiche
+ * assegnando all'ijesimo elemento della matrice dinamica l'elemento di indice offset del vettore statico si otterà una copia dinamica
+ * della matrice statica, copiata la matrice, restituisce un puntatore alla matrice dinamica, se l'allocazione della matrice dinamica
+ * fallisce restituisce NULL
+ *
+ * @param pointerTo00 puntatore al primo elemento della matrice statica usando (int *)matriceStatica
+ * @param numRighe il numero di righe della matrice da copiare
+ * @param numRighe il numero di colonne della matrice da copiare
+ * @return Int *
+ */
 int **copiaMatriceStaticaInDinamica(int *pointerTo00, size_t numRighe, size_t numColonne);
 
 /**
-    TODO: @Framaio25 -> fare la documentazione
-*/
+ * @brief Copia una matrice dinamica in un altra matrice dinamica
+ *
+ * Alloca dinamicamente una matrice dinamica con la funzione creaMatrice, se l'allocazione riesce all'ijesimo elemento
+ * della nuova matrice viene assegnato il valore dell'ijesimo elemento della matrice originale e restituisce il puntatore
+ * alla copia della matrice, altrimenti restituisce NULL
+ *
+ * @param matrice puntatore alla matrice dinamica
+ * @param numRighe numero di righe della matrice da copiare
+ * @param numColonne numero di colonne della matrice da copiare
+ * @return Int **
+ */
 int **copiaMatriceDinamica(int **matrice, size_t numRighe, size_t numColonne);
 
 
 /**
-    TODO: @Framaio25 -> fare la documentazione
+ * @brief Dealloca la memoria allocata ad un array dinamico
+ *
+ * @param riga puntatore al primo elemento dell'array dinamico da deallocare
+ * @return Void
 */
 void cancellaVettoreRiga(int *riga);
 
 /**
-    TODO: @Framaio25 -> fare la documentazione
+ * @brief Dealloca la memoria allocata a una matrice, e a tutte le sue righe
+ *
+ * Dealloca la memoria assegnata a ogni array di interi che costituivano le colonne della matrice, e all array di puntatori
+ * a intero che creava la matrice
+ *
+ * @param matrice puntatore alla matrice dinamica
+ * @param numRighe numero di righe della matrice da eliminare
+ * @return Void
 */
 void cancellaMatrice(int **matrice, size_t numRighe);
 
 /**
-    TODO: @Framaio25 -> fare la documentazione
+ * @brief Dealloca la memoria allocata a una matrice, e a tutte le sue righe
+ *
+ * Dealloca la memoria assegnata a ogni array di frazioni che costituivano le colonne della matrice, e all array di puntatori
+ * a frazione che creava la matrice
+ *
+ * @param matrice puntatore alla matrice dinamica
+ * @param numRighe numero di righe della matrice da eliminare
+ * @return Void
 */
 void cancellaMatrice_f(Frazione **matrice, size_t numRighe);
 
 /**
-    TODO: @Framaio25 -> fare la documentazione
+ * @brief Crea e retituisce la trasposta di una matrice
+ *
+ * Alloca dinamicamente una matrice di righe NumColonne e di colonne NumRighe con la funzione creaMatrice , se l'allocazione 
+ * riesce all'ijesimo elemento della nuova matrice viene assegnato il valore del jiesimo elemento della matrice passata come
+ * parametro e restituisce il puntatore alla nuova matrice dinamica, altrimenti restituisce NULL
+ *
+ * @param matrice puntatore alla matrice dinamica di cui si vuole costruire la trasposta
+ * @numRighe numero di righe della matrice di cui si vuole costruire la trasposta
+ * @numColonne numero di colonne della matrice di cui si vuole costruire la trasposta
+ * @return Int**
 */
 int **MatriceTrasposta(int **matrice, size_t numRighe, size_t numColonne);
 
 /**
-    TODO: @Framaio25 -> fare la documentazione
+ * @brief scambia due righe di una matrice dinamica
+ *
+ * Essendo la matrice un array di puntatori a interi, per scambiare due righe ovvero array di interi, scambia il puntatore
+ * alla riga di indice RigaA con il puntatore alla riga di indce rigaB tramite una variabile ausiliaria
+ *
+ * @param matrice puntatore alla matrice dinamica
+ * @param rigaA indice della prima riga della matrice da scambiare con la seconda
+ * @param rigaB indice della seconda riga della matrice da scambiare con la prima
 */
 void scambiaRighe(int **matrice, int rigaA, int rigaB);
 
