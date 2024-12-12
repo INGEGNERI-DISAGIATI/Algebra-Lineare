@@ -13,7 +13,7 @@ int main(void) {
         puts("0) ESCI.");
         puts("1) Matrice n * m [inserisci il vettore dei termini noti come ultima colonna]");
         puts("2) Matrice n * n [non inserire il vettore dei termini noti ]");
-        puts("3) Operazioni tra matrici / vettori")
+        puts("3) Operazioni tra matrici / vettori");
         puts("");
         printf("Cosa vuoi calcolare? ");
         scanf("%d", &r1);
@@ -137,7 +137,7 @@ int main(void) {
                 cancellaMatrice(matrice, ordine);
                 break;
             }
-
+            /*
             case 3: {
                 
                 int r2 = 0;
@@ -195,18 +195,17 @@ int main(void) {
 
                         default:
                     }
-
                 } while (r2 != 0);
-                
+
 
                 cancellaMatrice(matrice1, righe1);
                 cancellaMatrice(matrice2, righe2);
                 cancellaMatrice(prodottoMatrice, righe1);
+                */
 
             }
         }
-
-    } while (r1 != 0);
+    while (r1 != 0);
 
     return EXIT_SUCCESS;
 }

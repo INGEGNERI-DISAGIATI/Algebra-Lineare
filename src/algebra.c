@@ -60,13 +60,16 @@ Tupla *contaZeri(int **matrice, size_t righe, size_t colonne) {
 int ordinaRighe(int **matrice, size_t righe, size_t colonne) {
     Tupla *zeri = contaZeri(matrice, righe, colonne);
 
-    qsort(zeri, righe, sizeof(Tupla), compare);
-
-    int scambi = 0;
-    for(int i = 0; i < righe; i++) {
-        scambi += abs(zeri[i].indiceDiRiga - i);
+    int inversioni = 0;
+    for (int i = 0; i < righe - 1; i++) {
+        for (int j = i + 1; j < righe; j++) {
+            if (zeri[i].numeroDiZeri > zeri[j].numeroDiZeri) {
+                inversioni++;
+            }
+        }
     }
-    scambi /= 2;
+
+    qsort(zeri, righe, sizeof(Tupla), compare);
 
     int **copia = copiaMatriceDinamica(matrice, righe, colonne);
     for (int i = 0; i < righe; i++) {
@@ -77,7 +80,7 @@ int ordinaRighe(int **matrice, size_t righe, size_t colonne) {
     free(copia);
     free(zeri);
 
-    return scambi;
+    return inversioni;
 }
 
 
@@ -91,6 +94,7 @@ bool aScala(int **matrice, size_t righe, size_t colonne) {
     }
     return true;
 }
+
 
 int individuaPivot(int *riga, size_t colonne) {
     return contaZeriPerRigaConsecutivi(riga, colonne);
@@ -143,13 +147,16 @@ void svuotaColonna(int **matrice, size_t righe, size_t colonne, size_t riga) {
  */
 int eliminazioneDiGaussInt(int *coefficienti, int **matrice, size_t righe, size_t colonne) {
     int index = 0;
-    int scambi = 0;
+    int scambi = -1;
     if(coefficienti != NULL) {
         *coefficienti = 1;
     }
     while (!aScala(matrice, righe, colonne) && index < righe) {
         svuotaColonnaInt(coefficienti, matrice, righe, colonne, index);
-        scambi += ordinaRighe(matrice, righe, colonne);
+        int s = ordinaRighe(matrice, righe, colonne);
+        if (scambi == -1) {
+            scambi = s;
+        }
 
         index ++;
     }
