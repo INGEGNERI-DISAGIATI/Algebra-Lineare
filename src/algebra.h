@@ -2,37 +2,45 @@
 #define _ALGEBRA_H_
 
 
-#include <stddef.h>
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#include <math.h>
-#include <string.h>
 
-/*
-    Tipo: Tupla
-    contiene 2 interi e viene utilizzato per memorizzare quanti zeri ci sono per ogni riga
-*/
+
+
+/**
+ * @brief Struct per rappresentare una tupla.
+ *
+ * La struct Tupla è utilizzata per memorizzare il numero di zeri in una riga di una matrice e l'indice della riga.
+ *
+ * @param numeroDiZeri Numero di zeri nella riga.
+ * @param indiceDiRiga Indice della riga nella quale sono contati gli zeri.
+ */
 typedef struct {
-    int numeroDiZeri;
-    int indiceDiRiga;
+ int numeroDiZeri; /**< Numero di zeri nella riga */
+ int indiceDiRiga; /**< Indice della riga nella quale sono contati gli zeri */
 } Tupla;
 
-/*
-    Tipo: Frazione
-    Serve a rappresentare le frazioni senza utilizzare i float
-*/
+/**
+ * @brief Struct per rappresentare una frazione.
+ *
+ * La struct Frazione è utilizzata per rappresentare le frazioni senza utilizzare i tipi di dato float o double.
+ *
+ * @param numeratore Numeratore della frazione.
+ * @param denominatore Denominatore della frazione.
+ */
 typedef struct {
-    int numeratore;
-    int denominatore;
+ int numeratore;   /**< Numeratore della frazione */
+ int denominatore; /**< Denominatore della frazione */
 } Frazione;
 
 /**
  * @brief Calcola il Massimo Comun Divisore di 2 numeri
  *
- * Controlla se il valore 'b' è uguale a 0 e ritorna: a
- * altrimenti ritorna il MASSIMO COMUN DIVISORE tra 'b' e 'a % b'
- * utilizza la formula di euclide utilizzando il resto.
+ * Controlla se il valore 'b' è uguale a 0 e ritorna: a.
+ * Altrimenti ritorna il MASSIMO COMUN DIVISORE tra 'b' e 'a % b'
+ * utilizza la formula di Euclide utilizzando il resto.
  *
  * @param a Primo numero intero.
  * @param b Secondo numero intero.
@@ -63,9 +71,9 @@ int mcm(int a, int b);
  * lineare utilizzando i coefficienti.
  * Ritorna il coefficiente di combinazione della rigaB
  *
- * @param rigaA primo array di interi
- * @param rigaB secondo array di interi
- * @param colonne numero di elementi dell'array
+ * @param rigaA Primo array di interi
+ * @param rigaB Secondo array di interi
+ * @param colonne Numero di elementi dell'array
  * @return Int
  */
 int combinazioneLineare(int *rigaA, int *rigaB, size_t colonne);
@@ -78,8 +86,8 @@ int combinazioneLineare(int *rigaA, int *rigaB, size_t colonne);
  * un valore non nullo, incrementa la variabile, in caso contrario ritorna il valore di counter.
  * 
  * FONDAMENTALE.
- * @param rigaA array di interi
- * @param colonne numero di elementi dell'array
+ * @param riga Array di interi
+ * @param colonne Numero di elementi dell'array
  * @return Int
  */
 int contaZeriPerRigaConsecutivi(const int *riga, size_t colonne);
@@ -91,9 +99,9 @@ int contaZeriPerRigaConsecutivi(const int *riga, size_t colonne);
  * (vedi definizione di Tupla), itera per tutta la matrice ed assegna all'attributo numeroDiZeri
  * dell'array di Tuple il numero di zeri della riga i, e alla proprietà indiceDiRiga l'indice della riga.
  * 
- * @param matrice matrice di interi
- * @param righe numero di righe della matrice
- * @param colonne numero di colonne della matrice
+ * @param matrice Matrice di interi
+ * @param righe Numero di righe della matrice
+ * @param colonne Numero di colonne della matrice
  * @return Tupla*
  */
 Tupla *contaZeri(int **matrice, size_t righe, size_t colonne);
@@ -101,17 +109,17 @@ Tupla *contaZeri(int **matrice, size_t righe, size_t colonne);
 /**
  * @brief Ordina le righe della matrice in ordine crescente in base al numero di zeri.
  *
- * Si calcola il numero di zeri per ogni riga passando alla funzione contaZeri la matrice e le sue grandezze
- * ordina secondo un metodo comparatore che agisce solo sul campo numeroDiZeri della tupla utilizzando l'algoritmo
- * quick sort presente nella libreria standard di C.
- * Esegue la copia della matrice in una matrice copia, dealloca ogni riga della matrice originale e gli assegna
- * il puntatore alla riga in posizione "zeri[i].indiceDiRiga" della matrice copia, infine dealloca il puntatore alla
- * matrice di copia e libera l'array di tuple
- * Ritorna il numero di scambi di righe vicine necessari per ordinare le righe
+ * Calcola il numero di zeri per ogni riga utilizzando la funzione contaZeri.
+ * Ordina le righe della matrice in base al numero di zeri utilizzando l'algoritmo quick sort
+ * e un metodo comparatore che agisce solo sul campo numeroDiZeri della tupla.
+ * Esegue una copia della matrice originale, dealloca ogni riga della matrice originale e
+ * assegna il puntatore alla riga nella posizione "zeri[i].indiceDiRiga" della matrice copia.
+ * Infine, dealloca il puntatore alla matrice di copia e libera l'array di tuple.
+ * Ritorna il numero di inversioni necessarie calcolare successivamente il determinante con il metodo di Gauss
  *
- * @param matrice matrice di interi
- * @param righe numero di righe della matrice
- * @param colonne numero di colonne della matrice
+ * @param matrice Matrice di interi
+ * @param righe Numero di righe della matrice
+ * @param colonne Numero di colonne della matrice
  * @return Int
  */
 int ordinaRighe(int **matrice, size_t righe, size_t colonne);
@@ -123,9 +131,9 @@ int ordinaRighe(int **matrice, size_t righe, size_t colonne);
  * è minore di quello della riga successiva, in caso ogni riga ha meno zeri della successiva, ritornerà true,
  * in caso contrario ci verrà restituito false.
  *
- * @param matrice matrice di interi
- * @param righe numero di righe della matrice
- * @param colonne numero di colonne della matrice
+ * @param matrice Matrice di interi
+ * @param righe Numero di righe della matrice
+ * @param colonne Numero di colonne della matrice
  * @return Bool
  */
 bool aScala(int **matrice, size_t righe, size_t colonne);
@@ -135,8 +143,8 @@ bool aScala(int **matrice, size_t righe, size_t colonne);
  *
  * Chiama dietro le quinte la funzione contaZeriPerRigaConsecutivi.
  *
- * @param matrice matrice di interi
- * @param colonne numero di elementi dell'array
+ * @param riga Array di interi
+ * @param colonne Numero di elementi dell'array
  * @return Int
  */
 int individuaPivot(int *riga, size_t colonne);
@@ -147,10 +155,10 @@ int individuaPivot(int *riga, size_t colonne);
  * Itera sulla matrice partendo dalla riga inserita e arriva fino al numero di righe massimo, nel mentre
  * esegue la combinazione lineare tra la riga dalla quale partire e tutte le righe sottostanti ad essa.
  *
- * @param matrice matrice di interi
- * @param righe numero di righe della matrice
- * @param colonne numero di colonne della matrice
- * @param righe riga dalla quale partire per svuotare la colonna
+ * @param matrice Matrice di interi
+ * @param righe Numero di righe della matrice
+ * @param colonne Numero di colonne della matrice
+ * @param riga Riga dalla quale partire per svuotare la colonna
  * @return Void
  */
 void svuotaColonna(int **matrice, size_t righe, size_t colonne, size_t riga);
@@ -161,9 +169,9 @@ void svuotaColonna(int **matrice, size_t righe, size_t colonne, size_t riga);
  * Fin quando la matrice non è a scala, oppure è stata ciclata tutta la matrice, vengono ordinate le righe in
  * base al numero di zeri che sono in ogni riga, e svuota la colonna sottostante alla riga corrente
  *
- * @param matrice matrice di interi
- * @param righe numero di righe della matrice
- * @param colonne numero di colonne della matrice
+ * @param matrice Matrice di interi
+ * @param righe Numero di righe della matrice
+ * @param colonne Numero di colonne della matrice
  * @return Void
  */
 int eliminazioneDiGauss(int **matrice, size_t righe, size_t colonne);
@@ -178,9 +186,9 @@ int eliminazioneDiGauss(int **matrice, size_t righe, size_t colonne);
  * termini noti, successivamente esegue l'eliminazione di Gauss verso il basso sulla matrice risultante e dopo averla fatta
  * riporta la matrice allo stato originario ruotandola di 180° e shiftandola di nuovo a sinistra.
  *
- * @param matrice matrice di interi
- * @param righe numero di righe della matrice
- * @param colonne numero di colonne della matrice
+ * @param matrice Matrice di interi
+ * @param righe Numero di righe della matrice
+ * @param colonne Numero di colonne della matrice
  * @return Void
  */
 void eliminazioneDiGaussJordan(int **matrice, size_t righe, size_t colonne);
@@ -196,9 +204,9 @@ void eliminazioneDiGaussJordan(int **matrice, size_t righe, size_t colonne);
  * accettando come parametri matrice, righe, colonne - 1 (esclude l'ultima colonna) perché si presuppone
  * che la matrice sia già a scala, poi calcola il rango di A|b (vettore dei termini noti)
  * 
- * @param matrice matrice di interi
- * @param righe numero di righe della matrice
- * @param colonne numero di colonne della matrice
+ * @param matrice Matrice di interi
+ * @param righe Numero di righe della matrice
+ * @param colonne Numero di colonne della matrice
  * @return Int
  */
 int roucheCapelli(int **matrice, size_t righe, size_t colonne);
@@ -209,9 +217,9 @@ int roucheCapelli(int **matrice, size_t righe, size_t colonne);
  * Scorre tutta la matrice e fin quando trova un elemento non nullo, incrementa il numero di pivot
  * e passa alla prossima riga.
  * 
- * @param matrice matrice di interi
- * @param righe numero di righe della matrice
- * @param colonne numero di colonne della matrice
+ * @param matrice Matrice di interi
+ * @param righe Numero di righe della matrice
+ * @param colonne Numero di colonne della matrice
  * @return Int
  */
 int contaPivot(int **matrice, size_t righe, size_t colonne);
@@ -222,9 +230,9 @@ int contaPivot(int **matrice, size_t righe, size_t colonne);
  * Risolve a scala il sistema utilizzando la risoluzione verso il basso e verso l'alto
  * 
  *
- * @param matrice matrice di interi
- * @param righe numero di righe della matrice
- * @param colonne numero di colonne della matrice
+ * @param matrice Matrice di interi
+ * @param righe Numero di righe della matrice
+ * @param colonne Numero di colonne della matrice
  * @return Void
  */
 void risolviSistema(int **matrice, size_t righe, size_t colonne);
@@ -239,8 +247,8 @@ void risolviSistema(int **matrice, size_t righe, size_t colonne);
  * coefficienti di combinazione utilizzati.
  * 
  *
- * @param matrice matrice di interi
- * @param ordine ordine della matrice
+ * @param matrice Matrice di interi
+ * @param ordine Mrdine della matrice
  * @return Int
  */
 int determinante(int **matrice, size_t ordine);
@@ -251,10 +259,10 @@ int determinante(int **matrice, size_t ordine);
  * Elimina la riga i e la colonna j e viene utilizzata all'interno della funzione che calcola il determinante
  * tramite laplace
  *
- * @param matrice matrice di interi
- * @param ordine ordine della matrice
- * @param dRiga riga da rimuovere
- * @param dColonna colonna da rimuovere
+ * @param matrice Matrice di interi
+ * @param ordine Ordine della matrice
+ * @param dRiga Riga da rimuovere
+ * @param dColonna Colonna da rimuovere
  * @return Int** [matrice di interi]
  */
 int **riduciMatrice(int **matrice, size_t ordine, int dRiga, int dColonna);
@@ -264,8 +272,8 @@ int **riduciMatrice(int **matrice, size_t ordine, int dRiga, int dColonna);
  *
  * Calcola il determinante di una matrice 3 * 3 con il metodo di sarrus.
  *
- * @param matrice matrice di interi
- * @param ordine ordine della matrice
+ * @param matrice Matrice di interi
+ * @param ordine Ordine della matrice
  * @return Int
  */
 int sarrus(int **matrice, size_t ordine);
@@ -280,19 +288,19 @@ int sarrus(int **matrice, size_t ordine);
  *
  * In caso l'ordine sia maggiore di 3, viene utilizzato il metodo di Laplace.
  *
- * @param matrice matrice di interi
- * @param ordine ordine della matrice
+ * @param matrice Matrice di interi
+ * @param ordine Ordine della matrice
  * @return Int
  */
 int laPlace(int **matrice, size_t ordine);
 
 /**
- * @brief goofy ahh POW [credit: @Framaio25]
+ * @brief Goofy ahh POW [credit: @Framaio25]
  *
  * funzione alternativa di pow per interi 
  *
- * @param base numero da elevare
- * @param exp esponente
+ * @param base Numero da elevare
+ * @param exp Esponente
  * @return Int
  */
 int gPow(int base, int exp);
@@ -304,9 +312,9 @@ int gPow(int base, int exp);
  * e successivamente inverte secondo l'asse orizzontale le righe della matrice, modificando la matrice
  * originale in una matrice ruotata di 180°
  *
- * @param matrice matrice di interi
- * @param righe numero di righe della matrice
- * @param colonne numero di colonne della matrice
+ * @param matrice Matrice di interi
+ * @param righe Numero di righe della matrice
+ * @param colonne Numero di colonne della matrice
  * @return Void
  */
 void ruotaMatrice(int **matrice, size_t righe, size_t colonne);
@@ -316,8 +324,8 @@ void ruotaMatrice(int **matrice, size_t righe, size_t colonne);
  *
  * Itera fino alla metà dell'array e lo spêcchia. (peppe riey)
  *
- * @param array array di interi
- * @param ordine numero di elementi dell'array
+ * @param vettore Array di interi
+ * @param ordine Numero di elementi dell'array
  * @return Void
  */
 void invertiArray(int *vettore, size_t ordine);
@@ -327,9 +335,9 @@ void invertiArray(int *vettore, size_t ordine);
  *
  * Itera per tutta la matrice e posiziona gli elementi nella posizione i-esima alla posizione successiva.
  *
- * @param matrice matrice di interi
- * @param righe numero di righe della matrice
- * @param colonne numero di colonne della matrice
+ * @param matrice Matrice di interi
+ * @param righe Numero di righe della matrice
+ * @param colonne Numero di colonne della matrice
  * @return Void
  */
 void shiftSinistraMatrice(int **matrice, size_t righe, size_t colonne);
@@ -339,12 +347,12 @@ void shiftSinistraMatrice(int **matrice, size_t righe, size_t colonne);
 /**
  * @brief Moltiplica tra di loro 2 vettori e restituisce uno scalare
  *
- * Itera per la lunghezza dell'array e somma ad una variabile il prodotto dell'elemento i-esimo del 
+ * Itera per la lunghezza dell'array e somma a una variabile il prodotto dell'elemento i-esimo del
  * vettore 1 con l'elemento i-esimo del vettore 2, venendo successivamente restituita.
  *
- * @param vettore1 primo vettore di interi
- * @param vettore2 secondo vettore di interi
- * @param size numero di elementi del vettore
+ * @param vettore1 Primo vettore di interi
+ * @param vettore2 Secondo vettore di interi
+ * @param size Numero di elementi del vettore
  * @return Int
  */
 int prodottoVettori(int *vettore1, int *vettore2, size_t size);
@@ -354,12 +362,27 @@ int prodottoVettori(int *vettore1, int *vettore2, size_t size);
  *
  * Itera per la lunghezza dell'array e l'i-esimo elemento del vettore con lo scalare e restituisce un nuovo vettore
  *
- * @param vettore primo vettore di interi
- * @param size numero di elementi del vettore
- * @param scalare moltiplicatore di ogni elemento del vettore
- * @return Int *
+ * @param vettore Primo vettore di interi
+ * @param size Numero di elementi del vettore
+ * @param scalare Moltiplicatore di ogni elemento del vettore
+ * @return Int * [array di interi]
  */
 int *prodottoVettoreScalare(int *vettore, size_t size, int scalare);
+
+/**
+ * @brief Moltiplica una matrice per un vettore
+ *
+ * Crea un vettore di lunghezza dinamica (pari al numero delle righe della matrice) e alla sua i-esima posizione assegna la somma dei prodotti
+ * di tutti gli elementi j-esimi della matrice e del vettore.
+ *
+ * @param matrice Matrice di interi
+ * @param righe Numero di righe della matrice
+ * @param colonne Numero di colonne della seconda matrice
+ * @param vettore Vettore di interi
+ * @param componenti Numero di elementi del vettore
+ * @return Int * [array di interi]
+ */
+int *prodottoMatriceVettore(int **matrice, size_t righe, size_t colonne, int *vettore, size_t componenti);
 
 /**
  * @brief Moltiplica 2 matrici
@@ -368,12 +391,12 @@ int *prodottoVettoreScalare(int *vettore, size_t size, int scalare);
  * della matrice risultato (m * k); aggiunge la somma degli elementi della prima riga moltiplicati per quelli della seconda
  * e restituisce una nuova matrice
  *
- * @param matrice1 prima matrice di interi
- * @param matrice2 seconda matrice di interi
- * @param righe1 righe della prima matrice
- * @param colonne1righe2 colonne della prima matrice e righe della seconda colonna
- * @param colonne2 colonne della seconda matrice
- * @return Int **
+ * @param matrice1 Prima matrice di interi
+ * @param matrice2 Seconda matrice di interi
+ * @param righe1 Righe della prima matrice
+ * @param colonne1Righe2 Colonne della prima matrice e righe della seconda colonna
+ * @param colonne2 Colonne della seconda matrice
+ * @return Int ** [matrice di interi]
  */
 int **prodottoMatrici(int **matrice1, int **matrice2, size_t righe1, size_t colonne1Righe2, size_t colonne2);
 
@@ -382,23 +405,23 @@ int **prodottoMatrici(int **matrice1, int **matrice2, size_t righe1, size_t colo
  *
  * Itera su tutta la matrice e moltiplica ogni elemento i,j della matrice per uno scalare e restituisce una nuova matrice
  *
- * @param matrice matrice di interi
- * @param righe numero di righe della matrice
- * @param colonne numero di colonne della seconda matrice
- * @param scalare moltiplicatore della matrice
- * @return Int **
+ * @param matrice Matrice di interi
+ * @param righe Numero di righe della matrice
+ * @param colonne Numero di colonne della seconda matrice
+ * @param scalare Moltiplicatore della matrice
+ * @return Int ** [matrice di interi]
  */
 int **prodottoMatriceScalare(int **matrice, size_t righe, size_t colonne, int scalare);
 
 /**
- * @brief estrae una colonna da una matrice
+ * @brief Estrae una colonna da una matrice
  *
- * Assegna ad un array gli elementi della
+ * Assegna a un array gli elementi della
  *
- * @param matrice matrice di interi
- * @param righe numero di righe della matrice
- * @param colonna colonna da estrarre
- * @return Int **
+ * @param matrice Matrice di interi
+ * @param righe Numero di righe della matrice
+ * @param colonna Colonna da estrarre
+ * @return Int ** [matrice di interi]
  */
 int *estraiColonna(int **matrice, size_t righe, int colonna);
 
@@ -408,8 +431,8 @@ int *estraiColonna(int **matrice, size_t righe, int colonna);
 /**
  * @brief Stampa un array di interi
  *
- * @param array array di interi
- * @param size numero di elementi dell'array
+ * @param array Array di interi
+ * @param size Numero di elementi dell'array
  * @return Void
  */
 void stampaArray(int *array, size_t size);
@@ -417,9 +440,9 @@ void stampaArray(int *array, size_t size);
 /**
  * @brief Stampa un array di interi
  *
- * @param array array di interi
- * @param righe numero di righe della matrice
- * @param colonne numero di colonne della matrice
+ * @param matrice Matrice di interi
+ * @param righe Numero di righe della matrice
+ * @param colonne Numero di colonne della matrice
  * @return Void
  */
 void stampaMatrice(int **matrice, size_t righe, size_t colonne);
@@ -427,8 +450,8 @@ void stampaMatrice(int **matrice, size_t righe, size_t colonne);
 /**
  * @brief Stampa un array di Tuple
  *
- * @param array array di interi
- * @param righe numero di righe dell'array di tuple
+ * @param tuple Array di Tuple
+ * @param righe Numero di righe dell'array di Tuple
  * @return Void
  */
 void stampaTuple(Tupla *tuple, size_t righe);
@@ -442,9 +465,9 @@ void stampaTuple(Tupla *tuple, size_t righe);
  * - zero se i valori sono uguali. 
  * - qualsiasi numero negativo se il secondo è più grande del primo.
  *
- * @param a puntatore void
- * @param b puntatore void
- * @return Void
+ * @param a Puntatore void
+ * @param b Puntatore void
+ * @return Int
  */
 int compare(const void *a, const void *b);
 
@@ -455,7 +478,7 @@ int compare(const void *a, const void *b);
  *
  * Calcola il massimo comun divisore di tutti e due i numeri della frazione e li divide per esso.
  *
- * @param frazione puntatore a Frazione
+ * @param frazione Puntatore a Frazione
  * @return Void
  */
 void riduciAiMinimiTermini(Frazione *frazione);
@@ -466,7 +489,8 @@ void riduciAiMinimiTermini(Frazione *frazione);
  * Moltiplica il numeratore della prima per quello della seconda e il denominatore
  * della prima per quello della seconda. Infine riduce ai minimi termini
  *
- * @param frazione puntatore a Frazione
+ * @param f1 Puntatore a Frazione
+ * @param f2 Puntatore a Frazione
  * @return Void
  */
 void moltiplicaFrazioni(Frazione *f1, Frazione *f2);
@@ -478,8 +502,8 @@ void moltiplicaFrazioni(Frazione *f1, Frazione *f2);
  * all'utente di inserire valore per valore al suo interno, dopo aver fatto ciò, modifica i due puntatori delle
  * righe e delle colonne con le misure della matrice
  *
- * @param righe righe della matrice
- * @param colonne colonne della matrice
+ * @param righe Righe della matrice
+ * @param colonne Colonne della matrice
  * @return Int **
 */
 int **inserisciMatriceNM(size_t *righe, size_t *colonne);
@@ -490,18 +514,29 @@ int **inserisciMatriceNM(size_t *righe, size_t *colonne);
  * Chiede all'utente l'ordine della matrice che vuole inserire, crea dinamicamente la matrice e chiede
  * all'utente di inserire valore per valore al suo interno, dopo aver fatto ciò, modifica il puntatore dell'ordine
  *
- * @param ordine ordine della matrice
- * @return Int **
+ * @param ordine Ordine della matrice
+ * @return Int ** [matrice di interi]
 */
 int **inserisciMatriceNN(size_t *ordine);
+
+/**
+ * @brief Crea un array di n elementi con valori inseriti dall'utente
+ *
+ * Chiede all'utente il numero di componenti dell'array che vuole inserire, lo crea dinamicamente e chiede
+ * all'utente di inserire valore per valore al suo interno, dopo aver fatto ciò, modifica il puntatore del numero di componenti.
+ *
+ * @param componenti Numero di componenti del vettore
+ * @return Int * [array di interi]
+*/
+int *inserisciVettore(size_t *componenti);
 
 /**
  * @brief Restituisce una matrice identità dell'ordine dato
  *
  * Crea una matrice dinamica riempita con tutti zeri e sulla diagonale principale inserisce 1.
  *
- * @param ordine ordine della matrice identità
- * @return Int **
+ * @param ordine Ordine della matrice identità
+ * @return Int ** [matrice di interi]
 */
 int **creaMatriceIdentita(size_t ordine);
 
@@ -509,15 +544,15 @@ int **creaMatriceIdentita(size_t ordine);
  * @brief Affianca 2 matrici 
  *
  * Crea una matrice che ha come numero di righe il parametro passato all'interno della funzione e come numero
- * di colonne colonne la somma del numero di colonne delle 2 matrici.
+ * di colonne la somma del numero di colonne delle 2 matrici.
  * Copia al suo interno tutti gli elementi della matrice1 e quelli della matrice2 e la restituisce.
  *
- * @param matrice1 matrice a cui viene affiancata matrice2
- * @param colonne1 colonne della matrice 1
- * @param matrice2 matrice che viene affiancata alla matrice1
- * @param colonne2 colonne della matrice 2
- * @param righe righe delle 2 matrici
- * @return Int **
+ * @param matrice1 Matrice a cui viene affiancata matrice2
+ * @param colonne1 Colonne della matrice 1
+ * @param matrice2 Matrice che viene affiancata alla matrice1
+ * @param colonne2 Colonne della matrice 2
+ * @param righe Righe delle 2 matrici
+ * @return Int ** [matrice di interi]
 */
 int **affiancaMatrice(int **matrice1, size_t colonne1, int **matrice2, size_t colonne2, size_t righe);
 
@@ -529,9 +564,9 @@ int **affiancaMatrice(int **matrice1, size_t colonne1, int **matrice2, size_t co
  * Successivamente inserisce la seconda metà della matrice affiancata (che per conseguenza dell'eliminaizone di Gauss sarà
  * la matrice inversa di quella iniziale) in una matrice di frazioni, ruducendo opportunamente ogni frazione ai minimi termini.
  *
- * @param matrice matrice della quale verrà calcolata l'inversa
- * @param ordine ordine della matrice
- * @return Frazione **
+ * @param matrice Matrice della quale verrà calcolata l'inversa
+ * @param ordine Ordine della matrice
+ * @return Frazione ** [matrice di frazioni]
 */
 Frazione **matriceInversa(int **matrice, size_t ordine);
 
@@ -540,9 +575,9 @@ Frazione **matriceInversa(int **matrice, size_t ordine);
  *
  * Se il denominatore è 1, stampa solo il numeratore, altrimenti lo stampa a frazione.
  *
- * @param matrice matrice di Frazioni
- * @param righe righe della matrice
- * @param colonne righe delle colonne
+ * @param matrice Matrice di Frazioni
+ * @param righe Righe della matrice
+ * @param colonne Righe delle colonne
  * @return Void
 */
 void stampaMatriceDiFrazioni(Frazione **matrice, size_t righe, size_t colonne);
@@ -556,8 +591,8 @@ void stampaMatriceDiFrazioni(Frazione **matrice, size_t righe, size_t colonne);
  * Alloca dinamicamente un array di interi e inizializza tutti i suoi valori a zero, se l'allocazione fallisce 
  * restituisce NULL altrimenti restituisce il puntatore al primo elemento dell'array di interi
  * 
- * @param dimensione numero di componenti dell'array
- * @return Int *
+ * @param dimensione Numero di componenti dell'array
+ * @return Int * [matrice di interi]
  */
 int *creaVettoreRiga(size_t dimensione);
 
@@ -570,9 +605,9 @@ int *creaVettoreRiga(size_t dimensione);
  * tramite la funzione creaVettoreRiga, se l'allocazione dell array di puntatori a intero e di tutti gli array di interi 
  * riesce restituisce il puntatore al primo elemento dell array di puntatori a interi, altrimenti restituisce NULL
  *
- * @param numRighe numero di righe della matrice 
- * @param numColonne numero di colonne della matrice
- * @return Int **
+ * @param numRighe Numero di righe della matrice
+ * @param numColonne Numero di colonne della matrice
+ * @return Int ** [matrice di interi]
  */
 int **creaMatrice(size_t numRighe, size_t numColonne);
 
@@ -583,9 +618,9 @@ int **creaMatrice(size_t numRighe, size_t numColonne);
  * nuovo vettore riga riesce al suo iesimo elemento viene assegnato l'iesimo elemento dell'array passatogli come parametro 
  * (riga[]) e restituisce il puntatore al primo elemento della copia, altrimenti restituisce NULL
  *
- * @param riga[] il puntatore al primo elemento dell array da copiare
- * @param numColonne il numero di elementi del vettore da copiare
- * @return Int **
+ * @param riga[] Puntatore al primo elemento dell array da copiare
+ * @param numColonne Numero di elementi del vettore da copiare
+ * @return Int ** [matrice di interi]
  */
 int *copiaVettoreRiga(int riga[], size_t numColonne);
 
@@ -600,10 +635,10 @@ int *copiaVettoreRiga(int riga[], size_t numColonne);
  * della matrice statica, copiata la matrice, restituisce un puntatore alla matrice dinamica, se l'allocazione della matrice dinamica
  * fallisce restituisce NULL
  *
- * @param pointerTo00 puntatore al primo elemento della matrice statica usando (int *)matriceStatica
- * @param numRighe il numero di righe della matrice da copiare
- * @param numRighe il numero di colonne della matrice da copiare
- * @return Int *
+ * @param pointerTo00 Puntatore al primo elemento della matrice statica usando (int *)matriceStatica
+ * @param numRighe Numero di righe della matrice da copiare
+ * @param numRighe Numero di colonne della matrice da copiare
+ * @return Int * [array di interi]
  */
 int **copiaMatriceStaticaInDinamica(int *pointerTo00, size_t numRighe, size_t numColonne);
 
@@ -614,18 +649,18 @@ int **copiaMatriceStaticaInDinamica(int *pointerTo00, size_t numRighe, size_t nu
  * della nuova matrice viene assegnato il valore dell'ijesimo elemento della matrice originale e restituisce il puntatore
  * alla copia della matrice, altrimenti restituisce NULL
  *
- * @param matrice puntatore alla matrice dinamica
- * @param numRighe numero di righe della matrice da copiare
- * @param numColonne numero di colonne della matrice da copiare
- * @return Int **
+ * @param matrice Puntatore alla matrice dinamica
+ * @param numRighe Numero di righe della matrice da copiare
+ * @param numColonne Numero di colonne della matrice da copiare
+ * @return Int ** [matrice di interi]
  */
 int **copiaMatriceDinamica(int **matrice, size_t numRighe, size_t numColonne);
 
 
 /**
- * @brief Dealloca la memoria allocata ad un array dinamico
+ * @brief Dealloca la memoria allocata a un array dinamico
  *
- * @param riga puntatore al primo elemento dell'array dinamico da deallocare
+ * @param riga Puntatore al primo elemento dell'array dinamico da deallocare
  * @return Void
 */
 void cancellaVettoreRiga(int *riga);
@@ -636,8 +671,8 @@ void cancellaVettoreRiga(int *riga);
  * Dealloca la memoria assegnata a ogni array di interi che costituivano le colonne della matrice, e all array di puntatori
  * a intero che creava la matrice
  *
- * @param matrice puntatore alla matrice dinamica
- * @param numRighe numero di righe della matrice da eliminare
+ * @param matrice Puntatore alla matrice dinamica
+ * @param numRighe Numero di righe della matrice da eliminare
  * @return Void
 */
 void cancellaMatrice(int **matrice, size_t numRighe);
@@ -648,8 +683,8 @@ void cancellaMatrice(int **matrice, size_t numRighe);
  * Dealloca la memoria assegnata a ogni array di frazioni che costituivano le colonne della matrice, e all array di puntatori
  * a frazione che creava la matrice
  *
- * @param matrice puntatore alla matrice dinamica
- * @param numRighe numero di righe della matrice da eliminare
+ * @param matrice Puntatore alla matrice dinamica
+ * @param numRighe Numero di righe della matrice da eliminare
  * @return Void
 */
 void cancellaMatrice_f(Frazione **matrice, size_t numRighe);
@@ -661,22 +696,23 @@ void cancellaMatrice_f(Frazione **matrice, size_t numRighe);
  * riesce all'ijesimo elemento della nuova matrice viene assegnato il valore del jiesimo elemento della matrice passata come
  * parametro e restituisce il puntatore alla nuova matrice dinamica, altrimenti restituisce NULL
  *
- * @param matrice puntatore alla matrice dinamica di cui si vuole costruire la trasposta
- * @numRighe numero di righe della matrice di cui si vuole costruire la trasposta
- * @numColonne numero di colonne della matrice di cui si vuole costruire la trasposta
- * @return Int**
+ * @param matrice Puntatore alla matrice dinamica di cui si vuole costruire la trasposta
+ * @param numRighe Numero di righe della matrice di cui si vuole costruire la trasposta
+ * @param numColonne Numero di colonne della matrice di cui si vuole costruire la trasposta
+ * @return Int** [matrice di interi]
 */
 int **MatriceTrasposta(int **matrice, size_t numRighe, size_t numColonne);
 
 /**
- * @brief scambia due righe di una matrice dinamica
+ * @brief Scambia due righe di una matrice dinamica
  *
  * Essendo la matrice un array di puntatori a interi, per scambiare due righe ovvero array di interi, scambia il puntatore
  * alla riga di indice RigaA con il puntatore alla riga di indce rigaB tramite una variabile ausiliaria
  *
- * @param matrice puntatore alla matrice dinamica
- * @param rigaA indice della prima riga della matrice da scambiare con la seconda
- * @param rigaB indice della seconda riga della matrice da scambiare con la prima
+ * @param matrice Puntatore alla matrice dinamica
+ * @param rigaA Indice della prima riga della matrice da scambiare con la seconda
+ * @param rigaB Indice della seconda riga della matrice da scambiare con la prima
+ * @return Void
 */
 void scambiaRighe(int **matrice, int rigaA, int rigaB);
 

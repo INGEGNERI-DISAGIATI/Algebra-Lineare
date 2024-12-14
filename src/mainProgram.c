@@ -137,24 +137,10 @@ int main(void) {
                 cancellaMatrice(matrice, ordine);
                 break;
             }
-            /*
+
             case 3: {
                 
                 int r2 = 0;
-
-                size_t righe1 = 0;
-                size_t colonne1 = 0;
-                
-                size_t righe2 = 0;
-                size_t colonne2 = 0;
-
-                int **matrice1 = inserisciMatriceNM(righe1, colonne1);
-                int **matrice2 = inserisciMatriceNM(righe2, colonne2);
-
-                if (colonne1 != righe2) {
-                    puts("ERRORE: Il numero di colonne della matrice 1 deve essere uguale al numero di righe della matrice 2");
-                    break;
-                }
 
                 do {
                     puts("0) <--- BACK");
@@ -168,44 +154,130 @@ int main(void) {
                     scanf("%d", &r2);
 
                     switch (r2) {
-                        case 0: {
-                                //TODO:
-                            }
+                        case 0:
+                                puts("Uscita...");
                             break;
+
                         case 1: {
-                                //TODO:
-                            }
-                            break;
-                        case 2: {
-                                //TODO:
-                            }
-                            break;
-                        case 3: {
-                                //TODO:
-                            }
-                            break;
-                        case 4: {
-                                //TODO:
-                            }
-                            break;
-                        case 5: {
-                                //TODO:
+                                size_t componenti1 = 0;
+                                size_t componenti2 = 0;
+
+                                int *vettore1 = inserisciVettore(&componenti1);
+                                int *vettore2 = inserisciVettore(&componenti2);
+
+                                if (componenti1 != componenti2) {
+                                    puts("ERRORE: Il numero di componenti dei 2 vettori deve essere uguale");
+                                    return EXIT_FAILURE;
+                                }
+                                int prodottoV = prodottoVettori(vettore1, vettore2, componenti1);
+
+                                printf("Il risultato del prodotto tra i 2 vettori è: %d\n", prodottoV);
+
+                                cancellaVettoreRiga(vettore1);
+                                cancellaVettoreRiga(vettore2);
                             }
                             break;
 
-                        default:
+                        case 2: {
+                                size_t componenti = 0;
+                                int scalare = 0;
+                                printf("%s", "Inserisci lo scalare: ");
+                                scanf("%d", &scalare);
+
+                                int *vettore = inserisciVettore(&componenti);
+
+                                int *prodottoVS = prodottoVettoreScalare(vettore, componenti, scalare);
+
+                                cancellaVettoreRiga(vettore);
+
+                                printf("Il prodotto tra il vettore e lo scalare %d è: \n", scalare);
+                                stampaArray(prodottoVS, componenti);
+
+                                cancellaVettoreRiga(prodottoVS);
+                            }
+                            break;
+
+                        case 3: {
+                                size_t componenti = 0;
+                                size_t righe = 0;
+                                size_t colonne = 0;
+
+                                int *vettore = inserisciVettore(&componenti);
+                                int **matrice = inserisciMatriceNM(&righe, &colonne);
+
+                                if (colonne != componenti) {
+                                    puts("ERROE: il numero di colonne della matrice deve essere UGUALE al numero di componenti del vettore");
+                                    return EXIT_FAILURE;
+                                }
+
+                                int *prodottoMV = prodottoMatriceVettore(matrice, righe, colonne, vettore, componenti);
+
+                                cancellaMatrice(matrice, righe);
+                                cancellaVettoreRiga(vettore);
+
+                                puts("Il prodotto tra la matrice e il vettore è: ");
+                                stampaArray(prodottoMV, righe);
+
+                                cancellaVettoreRiga(prodottoMV);
+                            }
+                            break;
+
+                        case 4: {
+                                size_t righe1 = 0;
+                                size_t colonne1 = 0;
+                                size_t righe2 = 0;
+                                size_t colonne2 = 0;
+
+                                int **matrice1 = inserisciMatriceNM(&righe1, &colonne1);
+
+                                int **matrice2 = inserisciMatriceNM(&righe2, &colonne2);
+
+                                if (colonne1 != righe2) {
+                                    puts("ERRORE: Il numero di colonne della matrice 1 deve essere UGUALE al numero di righe della matrice 2");
+                                    return EXIT_FAILURE;
+                                }
+
+                                size_t colonne1Righe2 = colonne1;
+
+                                int ** prodottoM = prodottoMatrici(matrice1, matrice2, righe1, colonne1Righe2, colonne2);
+
+                                cancellaMatrice(matrice1, righe1);
+                                cancellaMatrice(matrice2, righe2);
+
+                                puts("Il prodotto tra le 2 matrici è: ");
+                                stampaMatrice(prodottoM, righe1, colonne2);
+
+                                cancellaMatrice(prodottoM, righe1);
+                            }
+                            break;
+
+                        case 5: {
+                                int scalare = 0;
+                                size_t righe = 0;
+                                size_t colonne = 0;
+
+                                printf("Inserisci lo scalare: ");
+                                scanf("%d", &scalare);
+
+                                int **matrice = inserisciMatriceNM(&righe, &colonne);
+
+                                int **prodottoMS = prodottoMatriceScalare(matrice, righe, colonne, scalare);
+
+                                cancellaMatrice(matrice, righe);
+
+                                printf("Il prodotto tra la matrice e lo scalare %d è: \n", scalare);
+                                stampaMatrice(prodottoMS, righe, colonne);
+
+                                cancellaMatrice(prodottoMS, righe);
+                            }
+                            break;
+
+                        default: puts("ERRORE: inserisci una scelta valida");
                     }
                 } while (r2 != 0);
-
-
-                cancellaMatrice(matrice1, righe1);
-                cancellaMatrice(matrice2, righe2);
-                cancellaMatrice(prodottoMatrice, righe1);
-                */
-
             }
         }
-    while (r1 != 0);
+    } while (r1 != 0);
 
     return EXIT_SUCCESS;
 }

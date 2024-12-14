@@ -1,7 +1,5 @@
-#include "algebra.h"
 #include <stdio.h>
-#include <stdlib.h>
-
+#include "algebra.h"
 
 int MCD(int a, int b) {
     if (b == 0) {
@@ -38,7 +36,7 @@ int combinazioneLineare(int *rigaA, int *rigaB, size_t colonne) {
 
 int contaZeriPerRigaConsecutivi(const int *riga, size_t colonne) {
     int counter = 0;
-    for (int i = 0; i < colonne; i++) {
+    for (size_t i = 0; i < colonne; i++) {
         if (riga[i] != 0 ) {
             return counter;
         }
@@ -49,7 +47,7 @@ int contaZeriPerRigaConsecutivi(const int *riga, size_t colonne) {
 
 Tupla *contaZeri(int **matrice, size_t righe, size_t colonne) {
     Tupla *zeri = calloc(righe, sizeof(Tupla));
-    for (int i = 0; i < righe; i++) {
+    for (size_t i = 0; i < righe; i++) {
         zeri[i].numeroDiZeri = contaZeriPerRigaConsecutivi(matrice[i], colonne);
         zeri[i].indiceDiRiga = i;
     }
@@ -61,8 +59,8 @@ int ordinaRighe(int **matrice, size_t righe, size_t colonne) {
     Tupla *zeri = contaZeri(matrice, righe, colonne);
 
     int inversioni = 0;
-    for (int i = 0; i < righe - 1; i++) {
-        for (int j = i + 1; j < righe; j++) {
+    for (size_t i = 0; i < righe - 1; i++) {
+        for (size_t j = i + 1; j < righe; j++) {
             if (zeri[i].numeroDiZeri > zeri[j].numeroDiZeri) {
                 inversioni++;
             }
@@ -72,7 +70,7 @@ int ordinaRighe(int **matrice, size_t righe, size_t colonne) {
     qsort(zeri, righe, sizeof(Tupla), compare);
 
     int **copia = copiaMatriceDinamica(matrice, righe, colonne);
-    for (int i = 0; i < righe; i++) {
+    for (size_t i = 0; i < righe; i++) {
         free(matrice[i]);
         matrice[i] = copia[zeri[i].indiceDiRiga];
     }
@@ -87,7 +85,7 @@ int ordinaRighe(int **matrice, size_t righe, size_t colonne) {
 
 
 bool aScala(int **matrice, size_t righe, size_t colonne) {  
-    for (int i = 0; i < righe - 1; i++) {
+    for (size_t i = 0; i < righe - 1; i++) {
         if (individuaPivot(matrice[i], colonne) >= individuaPivot(matrice[i + 1], colonne)) {
             return false;
         }
@@ -117,7 +115,7 @@ int individuaPivot(int *riga, size_t colonne) {
  * @return Void
  */
 void svuotaColonnaInt(int *coefficienti, int **matrice, size_t righe, size_t colonne, size_t riga) {
-    for (int i = riga + 1; i < righe; i++) {
+    for (size_t i = riga + 1; i < righe; i++) {
         int coefficiente = combinazioneLineare(matrice[riga], matrice[i], colonne);
         if(coefficienti != NULL) {
             *coefficienti *= coefficiente;
@@ -151,7 +149,7 @@ int eliminazioneDiGaussInt(int *coefficienti, int **matrice, size_t righe, size_
     if(coefficienti != NULL) {
         *coefficienti = 1;
     }
-    while (!aScala(matrice, righe, colonne) && index < righe) {
+    while (!aScala(matrice, righe, colonne) && (size_t)index < righe) {
         svuotaColonnaInt(coefficienti, matrice, righe, colonne, index);
         int s = ordinaRighe(matrice, righe, colonne);
         if (scambi == -1) {
@@ -206,7 +204,7 @@ void eliminazioneDiGaussJordan(int **matrice, size_t righe, size_t colonne) {
 int **creaMatriceIdentita(size_t ordine) {
     int **identita = creaMatrice(ordine, ordine);
     
-    for (int i = 0; i < ordine; i++) {
+    for (size_t i = 0; i < ordine; i++) {
         identita[i][i] = 1;
     }
 
@@ -220,8 +218,8 @@ int **creaMatriceIdentita(size_t ordine) {
 int **affiancaMatrice(int **matrice1, size_t colonne1, int **matrice2, size_t colonne2, size_t righe) {
     int **copia = creaMatrice(righe, (colonne1 + colonne2));
     
-    for (int i = 0; i < righe; i++) {
-        for (int j = 0; j < (colonne1 + colonne2); j++) {
+    for (size_t i = 0; i < righe; i++) {
+        for (size_t j = 0; j < (colonne1 + colonne2); j++) {
             if (j < colonne1) {
                 copia[i][j] = matrice1[i][j];
             }
@@ -234,9 +232,6 @@ int **affiancaMatrice(int **matrice1, size_t colonne1, int **matrice2, size_t co
     return copia;
 }
 
-/**
-    TODO: fare dumentazione.
-*/
 Frazione **matriceInversa(int **matrice, size_t ordine) {
     if (determinante(matrice, ordine) == 0) {
         printf("La matrice è SINGOLARE. Impossibile trovare l'Inversa\n");
@@ -251,25 +246,25 @@ Frazione **matriceInversa(int **matrice, size_t ordine) {
     eliminazioneDiGauss(matriceAffiancata, ordine, (ordine * 2));
     
     ruotaMatrice(matriceAffiancata, ordine, (ordine * 2));
-    for (int i = 0; i < ordine; i++) {
+    for (size_t i = 0; i < ordine; i++) {
         shiftSinistraMatrice(matriceAffiancata, ordine, ordine * 2);
     }
     
     eliminazioneDiGauss(matriceAffiancata, ordine, (ordine * 2));
     ruotaMatrice(matriceAffiancata, ordine, (ordine * 2));
     
-    for (int i = 0; i < ordine; i++) {
+    for (size_t i = 0; i < ordine; i++) {
         shiftSinistraMatrice(matriceAffiancata, ordine, (ordine * 2));
     }
     ordinaRighe(matriceAffiancata, ordine, (ordine * 2));
 
     Frazione **inversa = malloc(ordine * sizeof(Frazione *));
-    for (int i = 0; i < ordine; i++) {
+    for (size_t i = 0; i < ordine; i++) {
         inversa[i] = malloc(ordine * sizeof(Frazione));
 
         int pivot = matriceAffiancata[i][i];
 
-        for (int j = 0; j < ordine; j++) {
+        for (size_t j = 0; j < ordine; j++) {
             inversa[i][j].numeratore = matriceAffiancata[i][j + ordine];
             inversa[i][j].denominatore = pivot;
             
@@ -304,8 +299,8 @@ int contaPivot(int **matrice, size_t righe, size_t colonne) {
         return -1;
     }
     int counter = 0;
-    for (int i = 0; i < righe; i++) {
-        for (int j = 0; j < colonne; j++) {
+    for (size_t i = 0; i < righe; i++) {
+        for (size_t j = 0; j < colonne; j++) {
             if (matrice[i][j] != 0) {
                 counter++;
                 break;
@@ -369,7 +364,7 @@ int determinante(int **matriceOriginale, size_t ordine) {
 
     int moltiplicatoreDeterminante = eliminazioneDiGaussInt(&coefficienti, matrice, ordine, ordine);
     
-    for(int i = 0; i < ordine; i++) {
+    for (size_t i = 0; i < ordine; i++) {
         determinante.numeratore *= matrice[i][i];
     }
     determinante.denominatore = coefficienti;
@@ -395,16 +390,16 @@ int gPow(int base, int exp) {
 
 int **riduciMatrice(int **matrice, size_t ordine, int dRiga, int dColonna) {
     int **matRidotta = calloc(ordine - 1, sizeof(int *));
-    for (int i = 0; i < ordine - 1; i++) {
+    for (size_t i = 0; i < ordine - 1; i++) {
         matRidotta[i] = calloc(ordine - 1, sizeof(int));
     }
 
     int iR = 0;
     int jR = 0;
-    for (int i = 0; i < ordine; i++) {
-        if (i != dRiga) {
-            for (int j = 0; j < ordine; j++) {
-                if(j == dColonna) {
+    for (size_t i = 0; i < ordine; i++) {
+        if ((int)i != dRiga) {
+            for (size_t j = 0; j < ordine; j++) {
+                if((int)j == dColonna) {
                     continue;
                     
                 }
@@ -445,7 +440,7 @@ int laPlace(int **matrice, size_t ordine) {
         return sarrus(matrice, ordine);
     } 
     else {
-        for(int i = 0; i < ordine; i++) {
+        for (size_t i = 0; i < ordine; i++) {
             det += matrice[i][0] * gPow(-1, (i +2)) * laPlace(riduciMatrice(matrice, ordine, i, 0), ordine - 1);
         }
     }
@@ -455,7 +450,7 @@ int laPlace(int **matrice, size_t ordine) {
 int prodottoVettori(int *vettore1, int *vettore2, size_t righe) {
     int scalare = 0;
     
-    for (int i = 0; i < righe; i++) {
+    for (size_t i = 0; i < righe; i++) {
         scalare += vettore1[i] * vettore2[i];
     }
 
@@ -465,7 +460,7 @@ int prodottoVettori(int *vettore1, int *vettore2, size_t righe) {
 int *prodottoVettoreScalare(int *vettore, size_t righe, int scalare) {
     int *vettoreScalare = malloc(righe * sizeof(int));
     
-    for (int i = 0; i < righe; i++) {
+    for (size_t i = 0; i < righe; i++) {
         vettoreScalare[i] = scalare * vettore[i];
     }
 
@@ -475,9 +470,9 @@ int *prodottoVettoreScalare(int *vettore, size_t righe, int scalare) {
 int **prodottoMatrici(int **matrice1, int **matrice2, size_t righe1, size_t colonne1Righe2, size_t colonne2) {
     int **prodotto = creaMatrice(righe1, colonne2);
 
-    for (int i = 0; i < righe1; i++) {
-        for (int j = 0; j < colonne2; j++) {
-            for (int k = 0; k < colonne1Righe2; k++) {
+    for (size_t i = 0; i < righe1; i++) {
+        for (size_t j = 0; j < colonne2; j++) {
+            for (size_t k = 0; k < colonne1Righe2; k++) {
                 prodotto[i][j] += matrice1[i][k] * matrice2[k][j];
             }
         }
@@ -489,8 +484,8 @@ int **prodottoMatrici(int **matrice1, int **matrice2, size_t righe1, size_t colo
 int **prodottoMatriceScalare(int **matrice, size_t righe, size_t colonne, int scalare) {
     int **prodottoMatrice = creaMatrice(righe, colonne);
     
-    for (int i = 0; i < righe; i++) {
-        for (int j = 0; j < colonne; j++) {
+    for (size_t i = 0; i < righe; i++) {
+        for (size_t j = 0; j < colonne; j++) {
             prodottoMatrice[i][j] = scalare * matrice[i][j];
         }
     }
@@ -498,11 +493,27 @@ int **prodottoMatriceScalare(int **matrice, size_t righe, size_t colonne, int sc
     return prodottoMatrice;
 }
 
+int *prodottoMatriceVettore(int **matrice, size_t righe, size_t colonne, int *vettore, size_t componenti) {
+    if (righe != componenti) {
+        puts("ERRORE: Il numero di Righe della matrice e il numero di Componenti del vettore sono diversi");
+        return NULL;
+    }
+
+    int *prodottoMatriceVettore = (int *)malloc(righe * sizeof(int));
+
+    for (size_t i = 0; i < righe; i++) {
+        for (size_t j = 0; j < colonne; j++) {
+            prodottoMatriceVettore[i] += matrice[i][j] * vettore[j];
+        }
+    }
+
+    return prodottoMatriceVettore;
+}
 
 int *estraiColonna(int **matrice, size_t righe, int colonna) {
     int *colonnaEstratta = malloc(righe * sizeof(int));
     
-    for (int i = 0; i < righe; i++) {
+    for (size_t i = 0; i < righe; i++) {
         colonnaEstratta[i] = matrice[i][colonna];
     }
 
@@ -511,14 +522,14 @@ int *estraiColonna(int **matrice, size_t righe, int colonna) {
 
 
 void ruotaMatrice(int **matrice, size_t righe, size_t colonne) {
-    for (int i = 0; i < righe; i++) {
-        for (int j = 0; j < colonne / 2; j++) {
+    for (size_t i = 0; i < righe; i++) {
+        for (size_t j = 0; j < colonne / 2; j++) {
             int tmp2 = matrice[i][colonne - j - 1];
             matrice[i][colonne - j - 1] = matrice[i][j];
             matrice[i][j] = tmp2;
         }
     }
-    for (int i = 0; i < righe / 2; i++) {
+    for (size_t i = 0; i < righe / 2; i++) {
         int *tmp = matrice[righe - i - 1];
         matrice[righe - i - 1] = matrice[i];
         matrice[i] = tmp;
@@ -526,7 +537,7 @@ void ruotaMatrice(int **matrice, size_t righe, size_t colonne) {
 }
 
 void invertiArray(int *vettore, size_t ordine) {
-    for (int i = 0; i < ordine / 2; i++) {
+    for (size_t i = 0; i < ordine / 2; i++) {
         int tmp = vettore[ordine - i - 1];
         vettore[ordine - i - 1] = vettore[i];
         vettore[i] = tmp;
@@ -534,8 +545,8 @@ void invertiArray(int *vettore, size_t ordine) {
 }
 
 void shiftSinistraMatrice(int **matrice, size_t righe, size_t colonne) {
-    for (int i = 0; i < righe; i++) {
-        for (int j = 0; j < colonne - 1; j++) {
+    for (size_t i = 0; i < righe; i++) {
+        for (size_t j = 0; j < colonne - 1; j++) {
             int tmp = matrice[i][j];
             matrice[i][j] = matrice[i][j + 1];
             matrice[i][j + 1] = tmp;
@@ -549,8 +560,8 @@ void shiftSinistraMatrice(int **matrice, size_t righe, size_t colonne) {
 void stampaArray(int *array, size_t size) {
     for (size_t i = 0; i < size; i++) {
         printf("%4d ", array[i]);
-    }   
-    puts("");
+        puts("");
+    }
 }
 
 void stampaMatrice(int **matrice, size_t righe, size_t colonne) {
@@ -562,7 +573,7 @@ void stampaMatrice(int **matrice, size_t righe, size_t colonne) {
 }
 
 void stampaTuple(Tupla *tuple, size_t righe) {
-    for (int i = 0; i < righe; i++) {
+    for (size_t i = 0; i < righe; i++) {
         printf("Numero di Zeri: %d\n", tuple[i].numeroDiZeri);
         printf("Indice di riga: %d\n", tuple[i].indiceDiRiga);
         puts("");
@@ -623,7 +634,7 @@ int *copiaVettoreRiga(int riga[], size_t numColonne) {
         puts("Errore di allocazione della memoria in copiaVettoreRiga");
         return ret;
     }
-    for (int i = 0; i < numColonne; i++) {
+    for (size_t i = 0; i < numColonne; i++) {
         ret[i] = riga[i];
     }
     return ret;
@@ -704,9 +715,7 @@ void scambiaRighe(int **matrice, int rigaA, int rigaB) {
 
 // ----------------------------------
 
-/**
-    TODO: fare documentazione
-*/
+
 int **inserisciMatriceNM(size_t *righe, size_t *colonne) {
     int **matrice;
     
@@ -745,9 +754,6 @@ int **inserisciMatriceNM(size_t *righe, size_t *colonne) {
     return matrice;
 }
 
-/**
-    TODO: fare documentazione
-*/
 int **inserisciMatriceNN(size_t *ordine) {
     int **matrice;
     
@@ -782,6 +788,28 @@ int **inserisciMatriceNN(size_t *ordine) {
     }
     
     return matrice;
+}
+
+int *inserisciVettore(size_t *componenti) {
+    int *vettore;
+
+    puts("Inserisci il numero di componenti del vettore: ");
+    scanf("%zu", componenti);
+
+    vettore = (int *)malloc(*componenti * sizeof(int));
+    if (vettore == NULL) {
+        puts("Errore nell'allocazione della memoria");
+        return NULL;
+    }
+
+    printf("Inserisci i valori del vettore:\n");
+    for (size_t i = 0; i < *componenti; i++) {
+        printf("Elemento [%zu]: ", i);
+        scanf("%d", &vettore[i]);
+
+    }
+
+    return vettore;
 }
 
 

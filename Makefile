@@ -1,44 +1,30 @@
-# Compiler e flags
 CC = gcc
-CFLAGS = -Wall -Wextra -g
+CFLAGS = -Wall -Wextra -std=c11 -Isrc
+LDFLAGS =
 
-# Directories
 SRC_DIR = src
-INC_DIR = include
-LIB_DIR = lib
 OBJ_DIR = obj
 BIN_DIR = bin
 
-# Files libreria
-LIB_SRC = $(SRC_DIR)/algebra.c
-LIB_OBJ = $(OBJ_DIR)/algebra.o
-LIB = $(LIB_DIR)/libalgebra.a
+SOURCES = $(wildcard $(SRC_DIR)/*.c)
+OBJECTS = $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SOURCES))
+EXECUTABLE = $(BIN_DIR)/mainProgram
 
-# Files programma principale
-MAIN = $(BIN_DIR)/mainProgram
-MAIN_SRC = mainProgram.c
+all: $(EXECUTABLE)
 
-# Target principale
-all: directories $(LIB) $(MAIN)
+$(EXECUTABLE): $(OBJECTS) | $(BIN_DIR)
+	$(CC) $(CFLAGS) $(OBJECTS) -o $@ $(LDFLAGS)
 
-# Crea le directory necessarie
-directories:
-    mkdir -p $(OBJ_DIR) $(LIB_DIR) $(BIN_DIR)
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
+	$(CC) $(CFLAGS) -c $< -o $@
 
-# Compila la libreria
-$(LIB_OBJ): $(LIB_SRC)
-    $(CC) $(CFLAGS) -I$(INC_DIR) -c $< -o $@
+$(OBJ_DIR):
+	mkdir -p $(OBJ_DIR)
 
-# Crea la libreria statica
-$(LIB): $(LIB_OBJ)
-    ar rcs $@ $^
+$(BIN_DIR):
+	mkdir -p $(BIN_DIR)
 
-# Compila il programma principale
-$(MAIN): $(MAIN_SRC) $(LIB)
-    $(CC) $(CFLAGS) -I$(INC_DIR) $^ -o $@
-
-# Pulizia
 clean:
-    rm -rf $(OBJ_DIR) $(LIB_DIR) $(BIN_DIR)
+	rm -rf $(OBJ_DIR) $(BIN_DIR)
 
-.PHONY: all clean directories
+.PHONY: all clean
