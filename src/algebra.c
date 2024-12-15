@@ -510,6 +510,28 @@ int *prodottoMatriceVettore(int **matrice, size_t righe, size_t colonne, int *ve
     return prodottoMatriceVettore;
 }
 
+int **sommaMatrici(int **matrice1, int **matrice2, size_t righe, size_t colonne) {
+    int **somma = creaMatrice(righe, colonne);
+
+    for (size_t i = 0; i < righe; i++) {
+        for (size_t j = 0; j < colonne; j++) {
+            somma[i][j] = matrice1[i][j] + matrice2[i][j];
+        }
+    }
+
+    return somma;
+}
+
+int *sommaVettori(int *vettore1, int *vettore2, size_t componenti) {
+    int *somma = creaVettoreRiga(componenti);
+
+    for (size_t i = 0; i < componenti; i++) {
+        somma[i] = vettore1[i] + vettore2[i];
+    }
+
+    return somma;
+}
+
 int *estraiColonna(int **matrice, size_t righe, int colonna) {
     int *colonnaEstratta = malloc(righe * sizeof(int));
     
@@ -559,17 +581,18 @@ void shiftSinistraMatrice(int **matrice, size_t righe, size_t colonne) {
 
 void stampaArray(int *array, size_t size) {
     for (size_t i = 0; i < size; i++) {
-        printf("%4d ", array[i]);
-        puts("");
+        printf("%4d\n", array[i]);
     }
 }
 
 void stampaMatrice(int **matrice, size_t righe, size_t colonne) {
     for (size_t i = 0; i < righe; i++) {
-        stampaArray(matrice[i], colonne);
+        for (size_t j = 0; j < colonne; j++) {
+            printf("%4d", matrice[i][j]);
+        }
+        puts("");
     }
-    puts("");
-    
+
 }
 
 void stampaTuple(Tupla *tuple, size_t righe) {

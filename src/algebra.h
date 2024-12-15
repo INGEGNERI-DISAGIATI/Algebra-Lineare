@@ -414,6 +414,33 @@ int **prodottoMatrici(int **matrice1, int **matrice2, size_t righe1, size_t colo
 int **prodottoMatriceScalare(int **matrice, size_t righe, size_t colonne, int scalare);
 
 /**
+ * @brief Somma due matrici
+ *
+ * Restituisce una matrice delle stesse dimensioni di quelle inserite e avrà come elementi la somma degli elementi
+ * di delle due matrici
+ *
+ * @param matrice1 Matrice di interi
+ * @param matrice2 Matrice di interi
+ * @param righe Numero di righe della matrice
+ * @param colonne Numero di colonne della seconda matrice
+ * @return Int ** [matrice di interi]
+ */
+int **sommaMatrici(int **matrice1, int **matrice2, size_t righe, size_t colonne);
+
+/**
+ * @brief Somma due vettori
+ *
+ * Restituisce un array delle stesse dimensioni di quelli inseriti e avrà come elementi la somma degli elementi
+ * di tutti e due gli array inseriti
+ *
+ * @param vettore1 Array di interi
+ * @param vettore2 Array di interi
+ * @param componenti Numero di componenti della matrice
+ * @return Int * [array di interi]
+ */
+int *sommaVettori(int *vettore1, int *vettore2, size_t componenti);
+
+/**
  * @brief Estrae una colonna da una matrice
  *
  * Assegna a un array gli elementi della

@@ -146,9 +146,11 @@ int main(void) {
                     puts("0) <--- BACK");
                     puts("1) Prodotto tra Vettori");
                     puts("2) Prodotto Vettore per Scalare");
-                    puts("3) Prodotto Matrice per Vettore"); //TODO:
+                    puts("3) Prodotto Matrice per Vettore");
                     puts("4) Prodotto Tra Matrici");
                     puts("5) Prodotto Matrice per Scalare");
+                    puts("6) Somma tra matrici");
+                    puts("7) Somma tra vettori");
                     puts("");
                     printf("Cosa vuoi calcolare? ");
                     scanf("%d", &r2);
@@ -271,6 +273,56 @@ int main(void) {
                                 cancellaMatrice(prodottoMS, righe);
                             }
                             break;
+                        case 6: {
+                                size_t righe1 = 0;
+                                size_t colonne1 = 0;
+                                size_t righe2 = 0;
+                                size_t colonne2 = 0;
+
+                                int **matrice1 = inserisciMatriceNM(&righe1, &colonne1);
+
+                                int **matrice2 = inserisciMatriceNM(&righe2, &colonne2);
+
+                                if (righe1 != righe2 && colonne1 != colonne2) {
+                                    puts("ERRORE: Le matrici devono avere le stesse dimensioni");
+                                    return EXIT_FAILURE;
+                                }
+
+                                int ** sommaM = sommaMatrici(matrice1, matrice2, righe1, colonne1);
+
+                                cancellaMatrice(matrice1, righe1);
+                                cancellaMatrice(matrice2, righe2);
+
+                                puts("La somma delle 2 matrici è: ");
+                                stampaMatrice(sommaM, righe1, colonne2);
+
+                                cancellaMatrice(sommaM, righe1);
+                        }
+                        break;
+
+                        case 7: {
+                                size_t componenti1 = 0;
+                                size_t componenti2 = 0;
+
+                                int *vettore1 = inserisciVettore(&componenti1);
+                                int *vettore2 = inserisciVettore(&componenti2);
+
+                                if (componenti1 != componenti2) {
+                                    puts("ERRORE: Il numero di componenti dei 2 vettori deve essere uguale");
+                                    return EXIT_FAILURE;
+                                }
+                                int *sommaV = sommaVettori(vettore1, vettore2, componenti1);
+
+                                cancellaVettoreRiga(vettore1);
+                                cancellaVettoreRiga(vettore2);
+
+                                printf("La somma tra i 2 vettori è:\n");
+                                stampaArray(sommaV, componenti1);
+
+                                cancellaVettoreRiga(sommaV);
+                        }
+                        break;
+
 
                         default: puts("ERRORE: inserisci una scelta valida");
                     }
